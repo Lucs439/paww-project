@@ -1,0 +1,40 @@
+{
+    "name": "paww-project",
+    "version": "1.0.0",
+    "description": "Collier connecté pour animaux - Application complète",
+    "main": "index.js",
+    "scripts": {
+      "dev": "concurrently \"npm run backend:dev\" \"npm run mobile:start\"",
+      "backend:dev": "cd backend && npm run dev",
+      "backend:start": "cd backend && npm start",
+      "backend:install": "cd backend && npm install",
+      "mobile:start": "cd mobile-app && npm start",
+      "mobile:install": "cd mobile-app && npm install",
+      "web:start": "cd web-app && npm start",
+      "web:install": "cd web-app && npm install",
+      "install:all": "npm run backend:install && npm run mobile:install && npm run web:install",
+      "docker:up": "docker-compose up -d",
+      "docker:down": "docker-compose down",
+      "docker:logs": "docker-compose logs -f",
+      "test": "npm run backend:test && npm run mobile:test",
+      "backend:test": "cd backend && npm test",
+      "mobile:test": "cd mobile-app && npm test"
+    },
+    "keywords": [
+      "pet",
+      "collar",
+      "iot",
+      "health",
+      "monitoring",
+      "mobile-app"
+    ],
+    "author": "Ton nom",
+    "license": "MIT",
+    "devDependencies": {
+      "concurrently": "^8.2.0"
+    },
+    "engines": {
+      "node": ">=16.0.0",
+      "npm": ">=8.0.0"
+    }
+  }

@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: paww_postgres
+    environment:
+      POSTGRES_DB: paww_db
+      POSTGRES_USER: paww_user
+      POSTGRES_PASSWORD: paww_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - paww_network
+
+  # Base de données InfluxDB pour les métriques
+  influxdb:
+    image: influxdb:2.0
+    container_name: paww_influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: paww_influx_password
+      DOCKER_INFLUXDB_INIT_ORG: paww
+      DOCKER_INFLUXDB_INIT_BUCKET: pet_metrics
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    networks:
+      - paww_network
+
+  # API Backend
+  backend:
+    build: ./backend
+    container_name: paww_backend
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: paww_db
+      DB_USER: paww_user
+      DB_PASSWORD: paww_password
+      INFLUX_URL: http://influxdb:8086
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - influxdb
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - paww_network
+    command: npm run dev
+
+  # Redis pour le cache
+  redis:
+    image: redis:7-alpine
+    container_name: paww_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - paww_network
+
+volumes:
+  postgres_data:
+  influxdb_data:
+
+networks:
+  paww_network:
+    driver: bridge
