@@ -2,13 +2,13 @@
 import React from 'react';
 import Svg, { Path, Circle, Rect, G, ClipPath, Defs } from 'react-native-svg';
 
-// Import des illustrations JPG/PNG
+// Import des illustrations PNG pour les animaux (au lieu des JPG)
 const IllustrationImage = require('./Illu page 1.jpg');
 const OnboardingIllu2 = require('./illu 2.png');
-const OnboardingIllu3 = require('./illu 3.jpg');
-const OnboardingIllu4 = require('./illu 4.jpg');
-const OnboardingIllu5 = require('./illu 5.jpg');
-const OnboardingIllu6 = require('./illu 6.jpg');
+const OnboardingIllu3 = require('./illu 3.png');
+const OnboardingIllu4 = require('./illu 4.png');
+const OnboardingIllu5 = require('./illu 5.png');
+const OnboardingIllu6 = require('./illu 6.png');
 const Vector4Image = require('./Vector 4.png');
 
 // Logo PAWW - conversion de ton vrai Logo.svg
@@ -49,6 +49,13 @@ export const Vector3 = ({ width = "100%", height = "100%" }) => (
   </Svg>
 );
 
+// Nouveau Vector4 comme composant SVG (créé à partir du PNG)
+export const Vector4 = ({ width = "100%", height = "100%" }) => (
+  <Svg width={width} height={height} viewBox="0 0 375 400" fill="none">
+    <Path d="M-50.2356 123.456C-46.8977 98.2104 -44.2714 74.849 -54.7767 51.5804C-65.7776 27.1387 -70.4439 1.95464 -67.9404 -22.7044C-57.7424 -122.698 42.3751 -161.973 125.93 -153.197C155.873 -150.045 182.633 -139.6 210.196 -127.426C237.976 -115.127 276.941 -104.435 305.957 -118.773C327.958 -129.65 372.517 -151.837 397.423 -145.348C419.486 -139.6 430.858 -143.216 453.971 -108.853C477.61 -73.7814 431.414 -10.6826 463.458 20.8059C475.509 32.6405 489.631 41.7562 503.258 51.4911C528.751 69.6596 553.07 90.4249 571.177 116.753C612.522 176.793 605.261 259.143 556.067 311.581C517.287 352.926 459.472 369.613 405.766 359.077C379.284 353.884 332.285 343.719 305.648 340.319C250.614 333.304 213.811 333.583 161.311 345.139C108.162 356.851 59.4936 377.122 2.54419 367.233C-28.8513 361.764 -58.6083 345.356 -75.6349 317.421C-115.651 251.665 -59.0098 188.689 -50.2356 123.456Z" fill="#FA4D5E" fillOpacity="0.6"/>
+  </Svg>
+);
+
 export const Vector5 = ({ width = "100%", height = "100%" }) => (
   <Svg width={width} height={height} viewBox="0 0 375 430" fill="none">
     <Path d="M-163.387 277.846C-159.988 252.6 -157.362 229.239 -167.868 205.971C-178.869 181.529 -183.535 156.345 -181.032 131.686C-170.834 31.6915 -70.7164 -7.58318 12.839 1.19261C42.7817 4.34447 69.5417 14.7889 97.105 26.9637C124.885 39.2622 163.85 49.9538 192.866 35.6159C214.867 24.7389 259.426 2.55224 284.332 9.04137C306.395 14.7889 317.767 11.1735 340.88 45.535C364.519 80.6073 318.323 143.706 350.367 175.194C362.418 187.029 376.54 196.145 390.167 205.879C415.66 224.048 439.979 244.813 458.086 271.141C499.431 331.181 492.17 413.531 442.976 465.969C404.196 507.314 346.381 524.001 292.675 513.464C266.193 508.272 219.194 498.106 192.557 494.707C137.523 487.692 100.72 487.971 48.2202 499.527C-4.92886 511.239 -53.5974 531.51 -110.547 521.621C-141.942 516.152 -171.7 499.744 -188.726 471.809C-228.742 406.053 -172.101 343.077 -163.387 277.846Z" fill="#FFC76F" fillOpacity="0.5"/>
@@ -61,7 +68,7 @@ export const Vector6 = ({ width = "100%", height = "100%" }) => (
   </Svg>
 );
 
-// Export des images d'illustrations
+// Export des images d'illustrations (maintenant en PNG)
 export const WelcomePets = IllustrationImage;
 export const Onboarding2Image = OnboardingIllu2;
 export const Onboarding3Image = OnboardingIllu3;
@@ -80,6 +87,7 @@ export default {
   Onboarding6Image,
   Vector2,
   Vector3,
+  Vector4,
   Vector4Image,
   Vector5,
   Vector6,

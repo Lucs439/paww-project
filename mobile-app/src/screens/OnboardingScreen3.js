@@ -11,8 +11,11 @@ import {
   Dimensions
 } from 'react-native';
 
-// Import de l'illustration et du background
-import { Onboarding3Image, Vector3 } from '../assets/illustrations';
+// Import du wrapper pour optimisation mobile web
+import MobileWebWrapper from '../components/MobileWebWrapper';
+
+// Import de l'illustration et des backgrounds
+import { Onboarding3Image, Vector3, Vector4 } from '../assets/illustrations';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -27,49 +30,58 @@ export default function OnboardingScreen3({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: '40%' }]} />
-        </View>
-        <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
-          <Text style={styles.skipText}>Passer</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.content}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>A t-il la banane ?</Text>
-          <Text style={styles.subtitle}>
-            En observant l'ensemble de ses données{'\n'}
-            nous pouvons vous alerter et vous{'\n'}
-            conseiller sur l'état mental de votre{'\n'}
-            animal.
-          </Text>
-        </View>
-
-        <View style={styles.illustrationContainer}>
-          <View style={styles.backgroundShape}>
-            <Vector3 width="120%" height="100%" />
+      <MobileWebWrapper hasBottomButton={true}>
+        <View style={styles.progressContainer}>
+          <View style={styles.progressBar}>
+            <View style={[styles.progressFill, { width: '40%' }]} />
           </View>
-          <View style={styles.illustrationPlaceholder}>
-            <Image 
-              source={Onboarding3Image} 
-              style={styles.illustrationImage}
-              resizeMode="cover"
-            />
-          </View>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={styles.nextButton} 
-            onPress={handleNext}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.nextButtonText}>→</Text>
+          <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
+            <Text style={styles.skipText}>Passer</Text>
           </TouchableOpacity>
         </View>
-      </View>
+
+        <View style={styles.content}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>A t-il la banane ?</Text>
+            <Text style={styles.subtitle}>
+              En observant l'ensemble de ses données{'\n'}
+              nous pouvons vous alerter et vous{'\n'}
+              conseiller sur l'état mental de votre{'\n'}
+              animal.
+            </Text>
+          </View>
+
+          <View style={styles.illustrationContainer}>
+            {/* Background avec Vector3 */}
+            <View style={styles.backgroundShape}>
+              <Vector3 width="120%" height="100%" />
+            </View>
+            
+            {/* Ajout de Vector4 pour plus d'effet */}
+            <View style={styles.backgroundShape2}>
+              <Vector4 width="100%" height="80%" />
+            </View>
+            
+            <View style={styles.illustrationPlaceholder}>
+              <Image 
+                source={Onboarding3Image} 
+                style={styles.illustrationImage}
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity 
+              style={styles.nextButton} 
+              onPress={handleNext}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.nextButtonText}>→</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </MobileWebWrapper>
     </SafeAreaView>
   );
 }
@@ -150,12 +162,21 @@ const styles = StyleSheet.create({
     width: '150%',
     height: '170%',
   },
+  // Nouveau Vector4 en arrière-plan
+  backgroundShape2: {
+    position: 'absolute',
+    bottom: -200,
+    right: -60,
+    width: '120%',
+    height: '140%',
+    zIndex: 0,
+  },
   illustrationPlaceholder: {
     alignItems: 'center',
     zIndex: 1,
     width: screenWidth - 20,
     height: 350,
-    marginBottom: 40,
+    marginBottom: Platform.OS === 'web' ? 0 : 40,
     backgroundColor: 'transparent',
   },
   illustrationImage: {
@@ -167,7 +188,7 @@ const styles = StyleSheet.create({
   // Boutons
   buttonContainer: {
     alignItems: 'flex-end',
-    marginBottom: Platform.OS === 'ios' ? 40 : 20,
+    marginBottom: Platform.OS === 'web' ? 0 : (Platform.OS === 'ios' ? 40 : 20),
     zIndex: 10,
     position: 'relative',
   },
