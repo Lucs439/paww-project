@@ -11,6 +11,9 @@ import {
   Dimensions
 } from 'react-native';
 
+// Import du wrapper pour optimisation mobile web
+import MobileWebWrapper from '../components/MobileWebWrapper';
+
 // Import de l'illustration et du background
 import { Onboarding2Image, Vector2 } from '../assets/illustrations';
 
@@ -27,52 +30,54 @@ export default function OnboardingScreen2({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Barre de progression */}
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: '20%' }]} />
-        </View>
-        <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
-          <Text style={styles.skipText}>Passer</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.content}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>
-            Suivez tous ses{'\n'}mouvements
-          </Text>
-          <Text style={styles.subtitle}>
-            Vous pouvez suivre les signaux invisibles{'\n'}
-            à l'oeil nu. Observez quand vous le voulez{'\n'}
-            son rythme cardiaque, les calories{'\n'}
-            dépensées et ses cycles de sommeil.
-          </Text>
-        </View>
-
-        <View style={styles.illustrationContainer}>
-          <View style={styles.backgroundShape}>
-            <Vector2 width="120%" height="100%" />
+      <MobileWebWrapper hasBottomButton={true}>
+        {/* Barre de progression */}
+        <View style={styles.progressContainer}>
+          <View style={styles.progressBar}>
+            <View style={[styles.progressFill, { width: '20%' }]} />
           </View>
-          <View style={styles.illustrationPlaceholder}>
-            <Image 
-              source={Onboarding2Image} 
-              style={styles.illustrationImage}
-              resizeMode="cover"
-            />
-          </View>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={styles.nextButton} 
-            onPress={handleNext}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.nextButtonText}>→</Text>
+          <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
+            <Text style={styles.skipText}>Passer</Text>
           </TouchableOpacity>
         </View>
-      </View>
+
+        <View style={styles.content}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>
+              Suivez tous ses{'\n'}mouvements
+            </Text>
+            <Text style={styles.subtitle}>
+              Vous pouvez suivre les signaux invisibles{'\n'}
+              à l'oeil nu. Observez quand vous le voulez{'\n'}
+              son rythme cardiaque, les calories{'\n'}
+              dépensées et ses cycles de sommeil.
+            </Text>
+          </View>
+
+          <View style={styles.illustrationContainer}>
+            <View style={styles.backgroundShape}>
+              <Vector2 width="120%" height="100%" />
+            </View>
+            <View style={styles.illustrationPlaceholder}>
+              <Image 
+                source={Onboarding2Image} 
+                style={styles.illustrationImage}
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity 
+              style={styles.nextButton} 
+              onPress={handleNext}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.nextButtonText}>→</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </MobileWebWrapper>
     </SafeAreaView>
   );
 }
@@ -170,7 +175,7 @@ const styles = StyleSheet.create({
   // Boutons
   buttonContainer: {
     alignItems: 'flex-end',
-    marginBottom: Platform.OS === 'ios' ? 40 : 20,
+    marginBottom: Platform.OS === 'web' ? 0 : (Platform.OS === 'ios' ? 40 : 20),
     zIndex: 10,
     position: 'relative',
   },

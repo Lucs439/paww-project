@@ -9,6 +9,9 @@ import {
   Image
 } from 'react-native';
 
+// Import du wrapper pour optimisation mobile web
+import MobileWebWrapper from '../components/MobileWebWrapper';
+
 // Import des SVG et images
 import { Logo, WelcomePets } from '../assets/illustrations';
 
@@ -25,55 +28,57 @@ export default function WelcomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        {/* Logo PAWW */}
-        <View style={styles.logoContainer}>
-          <Logo width={65} height={65} />
-        </View>
+      <MobileWebWrapper hasBottomButton={true}>
+        <View style={styles.content}>
+          {/* Logo PAWW */}
+          <View style={styles.logoContainer}>
+            <Logo width={65} height={65} />
+          </View>
 
-        {/* Titre et slogan */}
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Paww</Text>
-          <Text style={styles.subtitle}>
-            L'amour, ça se{'\n'}suit de près !
-          </Text>
-        </View>
-
-        {/* Illustration des animaux */}
-        <View style={styles.illustrationContainer}>
-          <Image 
-            source={WelcomePets} 
-            style={styles.illustrationImage}
-            resizeMode="contain"
-          />
-        </View>
-
-        {/* Boutons */}
-        <View style={styles.buttonContainer}>
-          {/* Bouton principal */}
-          <TouchableOpacity 
-            style={styles.primaryButton} 
-            onPress={handleGetStarted}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.primaryButtonText}>
-              Création de mon compte
+          {/* Titre et slogan */}
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Paww</Text>
+            <Text style={styles.subtitle}>
+              L'amour, ça se{'\n'}suit de près !
             </Text>
-          </TouchableOpacity>
-          
-          {/* Texte de connexion */}
-          <TouchableOpacity 
-            onPress={handleLogin} 
-            style={styles.loginContainer}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.loginText}>
-              Vous avez déjà un compte ? 
-              <Text style={styles.loginLink}> Connexion</Text>
-            </Text>
-          </TouchableOpacity>
+          </View>
+
+          {/* Illustration des animaux */}
+          <View style={styles.illustrationContainer}>
+            <Image 
+              source={WelcomePets} 
+              style={styles.illustrationImage}
+              resizeMode="contain"
+            />
+          </View>
+
+          {/* Boutons */}
+          <View style={styles.buttonContainer}>
+            {/* Bouton principal */}
+            <TouchableOpacity 
+              style={styles.primaryButton} 
+              onPress={handleGetStarted}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.primaryButtonText}>
+                Création de mon compte
+              </Text>
+            </TouchableOpacity>
+            
+            {/* Texte de connexion */}
+            <TouchableOpacity 
+              onPress={handleLogin} 
+              style={styles.loginContainer}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.loginText}>
+                Vous avez déjà un compte ? 
+                <Text style={styles.loginLink}> Connexion</Text>
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </MobileWebWrapper>
     </SafeAreaView>
   );
 }
@@ -131,7 +136,7 @@ const styles = StyleSheet.create({
   
   // Boutons
   buttonContainer: {
-    marginBottom: Platform.OS === 'ios' ? 40 : 20,
+    marginBottom: Platform.OS === 'web' ? 0 : (Platform.OS === 'ios' ? 40 : 20),
   },
   primaryButton: {
     backgroundColor: '#9E6AFF',
