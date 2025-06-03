@@ -15,7 +15,7 @@ import {
 import MobileWebWrapper from '../components/MobileWebWrapper';
 
 // Import de l'illustration et des backgrounds
-import { Onboarding3Image, Vector3, Vector4 } from '../assets/illustrations';
+import { Onboarding3Image, Vector3 } from '../assets/illustrations';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -55,11 +55,6 @@ export default function OnboardingScreen3({ navigation }) {
             {/* Background avec Vector3 */}
             <View style={styles.backgroundShape}>
               <Vector3 width="120%" height="100%" />
-            </View>
-            
-            {/* Ajout de Vector4 pour plus d'effet */}
-            <View style={styles.backgroundShape2}>
-              <Vector4 width="100%" height="80%" />
             </View>
             
             <View style={styles.illustrationPlaceholder}>
@@ -161,15 +156,6 @@ const styles = StyleSheet.create({
     right: -80,
     width: '150%',
     height: '170%',
-  },
-  // Nouveau Vector4 en arrière-plan
-  backgroundShape2: {
-    position: 'absolute',
-    bottom: -200,
-    right: -60,
-    width: '120%',
-    height: '140%',
-    zIndex: 0,
   },
   illustrationPlaceholder: {
     alignItems: 'center',

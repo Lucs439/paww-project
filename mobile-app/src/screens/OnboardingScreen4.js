@@ -11,8 +11,11 @@ import {
   Dimensions
 } from 'react-native';
 
-// Import de l'illustration et du background
-import { Onboarding4Image, Vector4Image } from '../assets/illustrations';
+// Import du wrapper pour optimisation mobile web
+import MobileWebWrapper from '../components/MobileWebWrapper';
+
+// Import de l'illustration et du background Vector4 SVG
+import { Onboarding4Image, Vector4 } from '../assets/illustrations';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -27,57 +30,57 @@ export default function OnboardingScreen4({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: '60%' }]} />
-        </View>
-        <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
-          <Text style={styles.skipText}>Passer</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.content}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>
-            Une alerte en cas{'\n'}de changements
-          </Text>
-          <Text style={styles.subtitle}>
-            En cas de changement anormal d'une ou{'\n'}
-            plusieurs données, une notification vous{'\n'}
-            est envoyée.{'\n\n'}
-            Une explication claire ainsi qu'un conseil{'\n'}
-            sont là pour vous afin de mieux{'\n'}
-            comprendre ce qu'il se passe.
-          </Text>
-        </View>
-
-        <View style={styles.illustrationContainer}>
-          <View style={styles.backgroundShape}>
-            <Image 
-              source={Vector4Image} 
-              style={styles.vectorBackground}
-              resizeMode="cover"
-            />
+      <MobileWebWrapper hasBottomButton={true}>
+        <View style={styles.progressContainer}>
+          <View style={styles.progressBar}>
+            <View style={[styles.progressFill, { width: '60%' }]} />
           </View>
-          <View style={styles.illustrationPlaceholder}>
-            <Image 
-              source={Onboarding4Image} 
-              style={styles.illustrationImage}
-              resizeMode="cover"
-            />
-          </View>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={styles.nextButton} 
-            onPress={handleNext}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.nextButtonText}>→</Text>
+          <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
+            <Text style={styles.skipText}>Passer</Text>
           </TouchableOpacity>
         </View>
-      </View>
+
+        <View style={styles.content}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>
+              Une alerte en cas{'\n'}de changements
+            </Text>
+            <Text style={styles.subtitle}>
+              En cas de changement anormal d'une ou{'\n'}
+              plusieurs données, une notification vous{'\n'}
+              est envoyée.{'\n\n'}
+              Une explication claire ainsi qu'un conseil{'\n'}
+              sont là pour vous afin de mieux{'\n'}
+              comprendre ce qu'il se passe.
+            </Text>
+          </View>
+
+          <View style={styles.illustrationContainer}>
+            {/* Background avec Vector4 SVG (rouge/rose) */}
+            <View style={styles.backgroundShape}>
+              <Vector4 width="120%" height="100%" />
+            </View>
+            
+            <View style={styles.illustrationPlaceholder}>
+              <Image 
+                source={Onboarding4Image} 
+                style={styles.illustrationImage}
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity 
+              style={styles.nextButton} 
+              onPress={handleNext}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.nextButtonText}>→</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </MobileWebWrapper>
     </SafeAreaView>
   );
 }
@@ -158,20 +161,12 @@ const styles = StyleSheet.create({
     width: '150%',
     height: '170%',
   },
-  vectorBackground: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
   illustrationPlaceholder: {
     alignItems: 'center',
     zIndex: 1,
     width: screenWidth - 20,
     height: 350,
-    marginBottom: 40,
+    marginBottom: Platform.OS === 'web' ? 0 : 40,
     backgroundColor: 'transparent',
   },
   illustrationImage: {
@@ -183,7 +178,7 @@ const styles = StyleSheet.create({
   // Boutons
   buttonContainer: {
     alignItems: 'flex-end',
-    marginBottom: Platform.OS === 'ios' ? 40 : 20,
+    marginBottom: Platform.OS === 'web' ? 0 : (Platform.OS === 'ios' ? 40 : 20),
     zIndex: 10,
     position: 'relative',
   },
