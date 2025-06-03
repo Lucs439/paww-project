@@ -11,6 +11,9 @@ import {
   Dimensions
 } from 'react-native';
 
+// Import du wrapper pour optimisation mobile web
+import MobileWebWrapper from '../components/MobileWebWrapper';
+
 // Import de l'illustration et du background
 import { Onboarding6Image, Vector6 } from '../assets/illustrations';
 
@@ -27,51 +30,53 @@ export default function OnboardingScreen6({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View style={[styles.progressFill, { width: '100%' }]} />
-        </View>
-        <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
-          <Text style={styles.skipText}>Passer</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.content}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>
-            Un export simple{'\n'}et efficace
-          </Text>
-          <Text style={styles.subtitle}>
-            Votre vétérinaire peut recevoir par mail{'\n'}
-            les rapports générés afin d'avoir un suivi{'\n'}
-            plus précis sur votre animal.{'\n'}
-            Trop pratique !
-          </Text>
-        </View>
-
-        <View style={styles.illustrationContainer}>
-          <View style={styles.backgroundShape}>
-            <Vector6 width="120%" height="100%" />
+      <MobileWebWrapper hasBottomButton={true}>
+        <View style={styles.progressContainer}>
+          <View style={styles.progressBar}>
+            <View style={[styles.progressFill, { width: '100%' }]} />
           </View>
-          <View style={styles.illustrationPlaceholder}>
-            <Image 
-              source={Onboarding6Image} 
-              style={styles.illustrationImage}
-              resizeMode="cover"
-            />
-          </View>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={styles.finishButton} 
-            onPress={handleFinish}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.finishButtonText}>Commencer</Text>
+          <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
+            <Text style={styles.skipText}>Passer</Text>
           </TouchableOpacity>
         </View>
-      </View>
+
+        <View style={styles.content}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>
+              Un export simple{'\n'}et efficace
+            </Text>
+            <Text style={styles.subtitle}>
+              Votre vétérinaire peut recevoir par mail{'\n'}
+              les rapports générés afin d'avoir un suivi{'\n'}
+              plus précis sur votre animal.{'\n'}
+              Trop pratique !
+            </Text>
+          </View>
+
+          <View style={styles.illustrationContainer}>
+            <View style={styles.backgroundShape}>
+              <Vector6 width="120%" height="100%" />
+            </View>
+            <View style={styles.illustrationPlaceholder}>
+              <Image 
+                source={Onboarding6Image} 
+                style={styles.illustrationImage}
+                resizeMode="cover"
+              />
+            </View>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity 
+              style={styles.finishButton} 
+              onPress={handleFinish}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.finishButtonText}>Commencer</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </MobileWebWrapper>
     </SafeAreaView>
   );
 }
@@ -157,7 +162,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width: screenWidth - 20,
     height: 350,
-    marginBottom: 40,
+    marginBottom: Platform.OS === 'web' ? 0 : 40,
     backgroundColor: 'transparent',
   },
   illustrationImage: {
@@ -169,7 +174,7 @@ const styles = StyleSheet.create({
   // Boutons
   buttonContainer: {
     alignItems: 'center',
-    marginBottom: Platform.OS === 'ios' ? 40 : 20,
+    marginBottom: Platform.OS === 'web' ? 0 : (Platform.OS === 'ios' ? 40 : 20),
     zIndex: 10,
     position: 'relative',
   },
