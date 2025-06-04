@@ -225,6 +225,19 @@ export default function IntroScreen({ navigation }) {
 
           {/* Actions */}
           <View style={styles.actionsSection}>
+            {/* Continuer avec environnement actuel */}
+            {currentEnvInfo && currentEnvInfo.type !== 'Non configuré' && (
+              <TouchableOpacity 
+                style={styles.continueButton}
+                onPress={() => navigation.navigate('Welcome')}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.continueText}>
+                  ✅ Continuer avec {currentEnvInfo.type}
+                </Text>
+              </TouchableOpacity>
+            )}
+            
             {/* Réinitialiser si configuré */}
             {currentEnvInfo && currentEnvInfo.type !== 'Non configuré' && (
               <TouchableOpacity 
@@ -401,6 +414,21 @@ const styles = StyleSheet.create({
   actionsSection: {
     alignItems: 'center',
     marginTop: 20,
+  },
+  continueButton: {
+    backgroundColor: '#10B981',
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    marginBottom: 16,
+    minWidth: 200,
+    alignItems: 'center',
+  },
+  continueText: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontWeight: '600',
+    fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
   },
   resetButton: {
     alignItems: 'center',

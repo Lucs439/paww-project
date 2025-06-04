@@ -1,6 +1,6 @@
-// App.js - Écran d'accueil PAWW avec tes spécifications exactes
+// App.js - Application PAWW avec vérification d'environnement au démarrage
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -15,13 +15,57 @@ import OnboardingScreen6 from './src/screens/OnboardingScreen6';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
 
+// Import du service d'environnement
+import EnvironmentService from './src/services/EnvironmentService';
+
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasEnvironment, setHasEnvironment] = useState(false);
+  const [initialRoute, setInitialRoute] = useState('Intro');
+
+  useEffect(() => {
+    checkEnvironmentOnStartup();
+  }, []);
+
+  const checkEnvironmentOnStartup = async () => {
+    try {
+      console.log('🚀 Démarrage de l\'application PAWW...');
+      
+      // Charger l'environnement existant
+      const envData = await EnvironmentService.loadEnvironment();
+      
+      if (envData && envData.type) {
+        // Environnement déjà configuré
+        console.log('✅ Environnement trouvé:', envData.type.toUpperCase());
+        setHasEnvironment(true);
+        setInitialRoute('Welcome'); // Aller directement à Welcome
+      } else {
+        // Pas d'environnement configuré
+        console.log('⚠️ Aucun environnement configuré, affichage de l\'intro');
+        setHasEnvironment(false);
+        setInitialRoute('Intro'); // Afficher l'intro
+      }
+    } catch (error) {
+      console.error('❌ Erreur lors de la vérification d\'environnement:', error);
+      // En cas d'erreur, forcer l'affichage de l'intro
+      setHasEnvironment(false);
+      setInitialRoute('Intro');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Écran de chargement pendant la vérification
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="Intro"
+        initialRouteName={initialRoute}
         screenOptions={{
           headerShown: false, // Cache la barre de navigation par défaut
           gestureEnabled: true, // Active les gestes de retour
@@ -89,20 +133,69 @@ export default function App() {
   );
 }
 
-// 🎯 NAVIGATION MISE À JOUR !
+// Composant d'écran de chargement
+function LoadingScreen() {
+  const React = require('react');
+  const { View, Text, StyleSheet, ActivityIndicator, Platform } = require('react-native');
+  const { Logo } = require('./src/assets/illustrations');
+
+  return (
+    <View style={loadingStyles.container}>
+      <View style={loadingStyles.content}>
+        <Logo width={100} height={100} />
+        <Text style={loadingStyles.title}>PAWW</Text>
+        <Text style={loadingStyles.subtitle}>Vérification de l'environnement...</Text>
+        <ActivityIndicator 
+          size="large" 
+          color="#9E6AFF" 
+          style={loadingStyles.spinner}
+        />
+      </View>
+    </View>
+  );
+}
+
+const loadingStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#171717',
+    marginTop: 20,
+    marginBottom: 8,
+    fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#6B7280',
+    marginBottom: 24,
+    fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
+  },
+  spinner: {
+    marginTop: 20,
+  },
+});
+
+// 🎯 APPLICATION MISE À JOUR !
 // 
-// ✅ Écran d'introduction avec sélection d'environnement (INT/PROD)
-// ✅ Informations importantes affichées
-// ✅ Écran d'accueil avec logo et boutons
-// ✅ Écran d'inscription complet
-// ✅ Écran de connexion
-// ✅ Navigation fluide entre écrans
-// ✅ Gestes de retour activés
+// ✅ Vérification d'environnement au démarrage
+// ✅ Écran de chargement pendant la vérification
+// ✅ Navigation conditionnelle selon l'environnement
+// ✅ Intro forcée si pas d'environnement configuré
+// ✅ Accès direct à Welcome si environnement déjà configuré
 // 
-// 🚀 NOUVEAUTÉS :
+// 🚀 LOGIQUE DE DÉMARRAGE :
 // 
-// 1. Page d'intro avec choix d'environnement
-// 2. Informations de version et build
-// 3. Accès d'urgence pour développeurs
-// 4. Alertes de confirmation pour sécurité
-// 5. Design cohérent avec l'identité PAWW
+// 1. App démarre → LoadingScreen
+// 2. Vérification environnement avec EnvironmentService
+// 3. Si configuré → Welcome directement
+// 4. Si pas configuré → IntroScreen obligatoire
+// 5. Après sélection environnement → Welcome
