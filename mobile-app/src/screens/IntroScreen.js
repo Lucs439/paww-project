@@ -47,11 +47,13 @@ export default function IntroScreen({ navigation }) {
   const handleEnvironmentSelect = async (environment) => {
     setSelectedEnv(environment);
     
-    // Afficher une confirmation
+    // Afficher une confirmation avec l'environnement sélectionné
     const envName = environment === 'int' ? 'Intégration (Test)' : 'Production';
+    const envUrl = environment === 'int' ? 'api-int.paww.app' : 'api.paww.app';
+    
     Alert.alert(
       `Environnement ${envName}`,
-      `Vous avez sélectionné l'environnement ${envName.toLowerCase()}.\n\nContinuer ?`,
+      `Configuration ${envName.toLowerCase()} :\n• API: ${envUrl}\n• Mode debug: ${environment === 'int' ? 'Activé' : 'Désactivé'}\n\nContinuer ?`,
       [
         {
           text: 'Annuler',
@@ -63,18 +65,24 @@ export default function IntroScreen({ navigation }) {
           style: 'default',
           onPress: async () => {
             try {
-              // Sauvegarder l'environnement avec le service
+              // Sauvegarder l'environnement sélectionné
               await EnvironmentService.saveEnvironment(environment);
               
               // Mettre à jour l'état local
               const envInfo = EnvironmentService.getEnvironmentInfo();
               setCurrentEnvInfo(envInfo);
               
-              // Navigation vers Welcome
+              console.log(`✅ Environnement ${envName} configuré`);
+              
+              // Navigation vers Welcome avec l'environnement configuré  
               navigation.navigate('Welcome');
             } catch (error) {
-              console.error('❌ Erreur lors de la sauvegarde:', error);
-              Alert.alert('Erreur', 'Impossible de sauvegarder la configuration.');
+              console.error('❌ Erreur lors de la configuration:', error);
+              Alert.alert(
+                'Erreur de configuration', 
+                `Impossible de configurer l'environnement ${envName.toLowerCase()}.\n\nErreur: ${error.message}`
+              );
+              setSelectedEnv(null);
             }
           }
         }
@@ -192,6 +200,17 @@ export default function IntroScreen({ navigation }) {
           <View style={styles.environmentSection}>
             <Text style={styles.sectionTitle}>Choisir l'environnement</Text>
             
+            {/* Information sur les configurations */}
+            <View style={styles.destinationInfo}>
+              <Text style={styles.destinationTitle}>⚙️ Configurations :</Text>
+              <Text style={styles.destinationUrl}>
+                🧪 INT → API: api-int.paww.app • Debug activé
+              </Text>
+              <Text style={styles.destinationUrl}>
+                🚀 PROD → API: api.paww.app • Analytics activé
+              </Text>
+            </View>
+            
             {/* Bouton INT */}
             <TouchableOpacity 
               style={[styles.envButton, styles.intButton]} 
@@ -202,7 +221,7 @@ export default function IntroScreen({ navigation }) {
                 <Text style={styles.envButtonIcon}>🧪</Text>
                 <View style={styles.envButtonText}>
                   <Text style={styles.envButtonTitle}>INTÉGRATION</Text>
-                  <Text style={styles.envButtonSubtitle}>Environnement de test • Données factices</Text>
+                  <Text style={styles.envButtonSubtitle}>Environnement de test • Mode debug • API de test</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -217,7 +236,7 @@ export default function IntroScreen({ navigation }) {
                 <Text style={styles.envButtonIcon}>🚀</Text>
                 <View style={styles.envButtonText}>
                   <Text style={styles.envButtonTitle}>PRODUCTION</Text>
-                  <Text style={styles.envButtonSubtitle}>Environnement réel • Données utilisateurs</Text>
+                  <Text style={styles.envButtonSubtitle}>Environnement réel • Analytics • API de production</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -359,6 +378,27 @@ const styles = StyleSheet.create({
   // Environnements
   environmentSection: {
     flex: 1,
+  },
+  destinationInfo: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 20,
+    borderLeftWidth: 4,
+    borderLeftColor: '#3B82F6',
+  },
+  destinationTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#171717',
+    marginBottom: 8,
+    fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
+  },
+  destinationUrl: {
+    fontSize: 14,
+    color: '#6B7280',
+    marginBottom: 4,
+    fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
   },
   envButton: {
     borderRadius: 12,

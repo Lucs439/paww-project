@@ -9,6 +9,7 @@ class EnvironmentService {
         name: 'Intégration',
         apiUrl: 'https://api-int.paww.app',
         wsUrl: 'wss://ws-int.paww.app',
+        appUrl: 'https://int.paww.app', // URL de l'app d'intégration
         debug: true,
         logLevel: 'debug',
         features: {
@@ -21,6 +22,7 @@ class EnvironmentService {
         name: 'Production',
         apiUrl: 'https://api.paww.app',
         wsUrl: 'wss://ws.paww.app',
+        appUrl: 'https://paww.app', // URL de l'app de production
         debug: false,
         logLevel: 'error',
         features: {
@@ -112,6 +114,11 @@ class EnvironmentService {
     return this.getCurrentConfig().apiUrl;
   }
 
+  // Obtenir l'URL de l'application
+  getAppUrl() {
+    return this.getCurrentConfig().appUrl;
+  }
+
   // Obtenir l'URL WebSocket
   getWebSocketUrl() {
     return this.getCurrentConfig().wsUrl;
@@ -148,6 +155,22 @@ class EnvironmentService {
       name: this.currentEnvironment.config.name,
       selectedAt: this.currentEnvironment.selectedAt,
       platform: this.currentEnvironment.platform,
+    };
+  }
+
+  // Obtenir toutes les URLs disponibles
+  getAllUrls() {
+    return {
+      int: {
+        name: this.environments.int.name,
+        appUrl: this.environments.int.appUrl,
+        apiUrl: this.environments.int.apiUrl,
+      },
+      prod: {
+        name: this.environments.prod.name,
+        appUrl: this.environments.prod.appUrl,
+        apiUrl: this.environments.prod.apiUrl,
+      }
     };
   }
 

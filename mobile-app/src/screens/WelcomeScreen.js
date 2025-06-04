@@ -12,6 +12,9 @@ import {
 // Import du wrapper pour optimisation mobile web
 import MobileWebWrapper from '../components/MobileWebWrapper';
 
+// Import du badge d'environnement
+import EnvironmentBadge from '../components/EnvironmentBadge';
+
 // Import des SVG et images
 import { Logo, WelcomePets } from '../assets/illustrations';
 
@@ -29,6 +32,9 @@ export default function WelcomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <MobileWebWrapper hasBottomButton={true}>
+        {/* Badge d'environnement en haut à droite */}
+        <EnvironmentBadge style={styles.environmentBadge} showDetails={false} />
+        
         <View style={styles.content}>
           {/* Logo PAWW */}
           <View style={styles.logoContainer}>
@@ -87,6 +93,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+  },
+  environmentBadge: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 20 : 16,
+    right: 16,
+    zIndex: 100,
   },
   content: {
     flex: 1,

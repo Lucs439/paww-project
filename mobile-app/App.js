@@ -1,6 +1,7 @@
 // App.js - Application PAWW avec vérification d'environnement au démarrage
 
 import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -14,6 +15,9 @@ import OnboardingScreen5 from './src/screens/OnboardingScreen5';
 import OnboardingScreen6 from './src/screens/OnboardingScreen6';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
+
+// Import du logo
+import { Logo } from './src/assets/illustrations';
 
 // Import du service d'environnement
 import EnvironmentService from './src/services/EnvironmentService';
@@ -135,10 +139,6 @@ export default function App() {
 
 // Composant d'écran de chargement
 function LoadingScreen() {
-  const React = require('react');
-  const { View, Text, StyleSheet, ActivityIndicator, Platform } = require('react-native');
-  const { Logo } = require('./src/assets/illustrations');
-
   return (
     <View style={loadingStyles.container}>
       <View style={loadingStyles.content}>
