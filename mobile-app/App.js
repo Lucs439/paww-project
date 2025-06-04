@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 // Import des écrans
+import IntroScreen from './src/screens/IntroScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import OnboardingScreen2 from './src/screens/OnboardingScreen2';
 import OnboardingScreen3 from './src/screens/OnboardingScreen3';
@@ -20,7 +21,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="Welcome"
+        initialRouteName="Intro"
         screenOptions={{
           headerShown: false, // Cache la barre de navigation par défaut
           gestureEnabled: true, // Active les gestes de retour
@@ -40,6 +41,16 @@ export default function App() {
           },
         }}
       >
+        {/* Écran d'introduction avec sélection d'environnement */}
+        <Stack.Screen 
+          name="Intro" 
+          component={IntroScreen}
+          options={{
+            title: 'Introduction',
+            gestureEnabled: false, // Empêche le retour sur cet écran
+          }}
+        />
+
         {/* Écran d'accueil */}
         <Stack.Screen 
           name="Welcome" 
@@ -78,18 +89,20 @@ export default function App() {
   );
 }
 
-// 🎯 NAVIGATION PRÊTE !
+// 🎯 NAVIGATION MISE À JOUR !
 // 
+// ✅ Écran d'introduction avec sélection d'environnement (INT/PROD)
+// ✅ Informations importantes affichées
 // ✅ Écran d'accueil avec logo et boutons
 // ✅ Écran d'inscription complet
 // ✅ Écran de connexion
 // ✅ Navigation fluide entre écrans
 // ✅ Gestes de retour activés
 // 
-// 🚀 PROCHAINES ÉTAPES :
+// 🚀 NOUVEAUTÉS :
 // 
-// 1. Tester la navigation sur ton iPhone
-// 2. Ajouter tes vrais SVG (logo.svg, illustration.svg)
-// 3. Connecter avec ton backend pour l'authentification
-// 4. Ajouter la validation des formulaires
-// 5. Ajouter les écrans post-connexion (dashboard, etc.)
+// 1. Page d'intro avec choix d'environnement
+// 2. Informations de version et build
+// 3. Accès d'urgence pour développeurs
+// 4. Alertes de confirmation pour sécurité
+// 5. Design cohérent avec l'identité PAWW
