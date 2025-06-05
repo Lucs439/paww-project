@@ -6,28 +6,44 @@ import {
   Platform,
   Dimensions 
 } from 'react-native';
+import { 
+  useResponsive, 
+  getResponsiveWidth, 
+  getResponsivePadding,
+  getResponsiveSpacing 
+} from '../utils/responsive';
 
 const { height: screenHeight } = Dimensions.get('window');
 
 export default function MobileWebWrapper({ children, style, hasBottomButton = false }) {
-  // Détection si on est sur web
+  // Utiliser le hook responsive
+  const responsive = useResponsive();
   const isWeb = Platform.OS === 'web';
   
-  // Padding bottom adaptatif pour éviter que le footer du navigateur cache les boutons
+  // Padding adaptatif selon la taille d'écran
   const getBottomPadding = () => {
-    if (!isWeb) return 20;
+    if (!isWeb) return getResponsiveSpacing(20);
     
-    // Sur web mobile, on ajoute plus de padding pour le footer du navigateur
+    // Sur web, adapter selon la taille d'écran
     if (hasBottomButton) {
-      return screenHeight < 700 ? 120 : 80; // Plus de padding sur petits écrans
+      if (responsive.isMobile) {
+        return responsive.height < 700 ? 120 : 80;
+      } else {
+        return getResponsiveSpacing(60);
+      }
     }
-    return 40;
+    return getResponsiveSpacing(40);
   };
 
+  // Style responsive du conteneur
   const containerStyle = [
     styles.container,
     {
-      paddingBottom: getBottomPadding()
+      paddingBottom: getBottomPadding(),
+      paddingHorizontal: getResponsivePadding(),
+      maxWidth: responsive.isDesktop ? 1200 : '100%',
+      alignSelf: 'center',
+      width: getResponsiveWidth(),
     },
     style
   ];

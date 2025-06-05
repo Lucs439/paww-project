@@ -21,9 +21,20 @@ import { Logo } from '../assets/illustrations';
 // Import du service d'environnement
 import EnvironmentService from '../services/EnvironmentService';
 
+// Import des utilitaires responsive
+import { 
+  useResponsive, 
+  getResponsiveFontSize, 
+  getResponsiveSpacing,
+  getResponsiveValue 
+} from '../utils/responsive';
+
 export default function IntroScreen({ navigation }) {
   const [selectedEnv, setSelectedEnv] = useState(null);
   const [currentEnvInfo, setCurrentEnvInfo] = useState(null);
+  
+  // Hook responsive
+  const responsive = useResponsive();
 
   useEffect(() => {
     // Charger l'environnement existant au démarrage
@@ -169,6 +180,9 @@ export default function IntroScreen({ navigation }) {
     );
   };
 
+  // Génération des styles responsive
+  const styles = createResponsiveStyles(responsive);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
@@ -247,41 +261,44 @@ export default function IntroScreen({ navigation }) {
               </Text>
             </View>
             
-            {/* Bouton INT */}
-            <TouchableOpacity 
-              style={[styles.envButton, styles.intButton]} 
-              onPress={() => {
-                console.log('🧪 Clic bouton INT détecté');
-                handleEnvironmentSelect('int');
-              }}
-              activeOpacity={0.8}
-            >
-              <View style={styles.envButtonContent}>
-                <Text style={styles.envButtonIcon}>🧪</Text>
-                <View style={styles.envButtonText}>
-                  <Text style={styles.envButtonTitle}>INTÉGRATION</Text>
-                  <Text style={styles.envButtonSubtitle}>Démarre l'onboarding • Mode test • Debug activé</Text>
+            {/* Conteneur responsive pour les boutons */}
+            <View style={styles.buttonsContainer}>
+              {/* Bouton INT */}
+              <TouchableOpacity 
+                style={[styles.envButton, styles.intButton]} 
+                onPress={() => {
+                  console.log('🧪 Clic bouton INT détecté');
+                  handleEnvironmentSelect('int');
+                }}
+                activeOpacity={0.8}
+              >
+                <View style={styles.envButtonContent}>
+                  <Text style={styles.envButtonIcon}>🧪</Text>
+                  <View style={styles.envButtonText}>
+                    <Text style={styles.envButtonTitle}>INTÉGRATION</Text>
+                    <Text style={styles.envButtonSubtitle}>Démarre l'onboarding • Mode test • Debug activé</Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
 
-            {/* Bouton PROD */}
-            <TouchableOpacity 
-              style={[styles.envButton, styles.prodButton]} 
-              onPress={() => {
-                console.log('🚀 Clic bouton PROD détecté');
-                handleEnvironmentSelect('prod');
-              }}
-              activeOpacity={0.8}
-            >
-              <View style={styles.envButtonContent}>
-                <Text style={styles.envButtonIcon}>🚀</Text>
-                <View style={styles.envButtonText}>
-                  <Text style={styles.envButtonTitle}>PRODUCTION</Text>
-                  <Text style={styles.envButtonSubtitle}>Environnement réel • Analytics • API de production</Text>
+              {/* Bouton PROD */}
+              <TouchableOpacity 
+                style={[styles.envButton, styles.prodButton]} 
+                onPress={() => {
+                  console.log('🚀 Clic bouton PROD détecté');
+                  handleEnvironmentSelect('prod');
+                }}
+                activeOpacity={0.8}
+              >
+                <View style={styles.envButtonContent}>
+                  <Text style={styles.envButtonIcon}>🚀</Text>
+                  <View style={styles.envButtonText}>
+                    <Text style={styles.envButtonTitle}>PRODUCTION</Text>
+                    <Text style={styles.envButtonSubtitle}>Environnement réel • Analytics • API de production</Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Actions */}
@@ -325,34 +342,35 @@ export default function IntroScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+// Fonction pour créer des styles responsive
+const createResponsiveStyles = (responsive) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingVertical: 20,
+    paddingHorizontal: 0, // Maintenant géré par MobileWebWrapper
+    paddingVertical: getResponsiveSpacing(20),
   },
   
   // Header
   header: {
     alignItems: 'center',
-    marginBottom: 40,
-    paddingTop: 20,
+    marginBottom: getResponsiveSpacing(40),
+    paddingTop: getResponsiveSpacing(20),
   },
   title: {
-    fontSize: 32,
+    fontSize: getResponsiveFontSize(32),
     fontWeight: '700',
     color: '#171717',
-    marginTop: 12,
+    marginTop: getResponsiveSpacing(12),
     fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: getResponsiveFontSize(16),
     color: '#6B7280',
-    marginTop: 4,
+    marginTop: getResponsiveSpacing(4),
     fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
   },
   currentEnvBadge: {
@@ -371,16 +389,16 @@ const styles = StyleSheet.create({
 
   // Sections
   sectionTitle: {
-    fontSize: 18,
+    fontSize: getResponsiveFontSize(18),
     fontWeight: '600',
     color: '#171717',
-    marginBottom: 16,
+    marginBottom: getResponsiveSpacing(16),
     fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
   },
 
   // Informations
   infoSection: {
-    marginBottom: 40,
+    marginBottom: getResponsiveSpacing(40),
   },
   infoCard: {
     flexDirection: 'row',
@@ -421,6 +439,11 @@ const styles = StyleSheet.create({
   environmentSection: {
     flex: 1,
   },
+  buttonsContainer: {
+    flexDirection: responsive.isDesktop ? 'row' : 'column',
+    gap: responsive.isDesktop ? getResponsiveSpacing(16) : 0,
+    justifyContent: 'space-between',
+  },
   destinationInfo: {
     backgroundColor: '#F8FAFC',
     borderRadius: 8,
@@ -443,9 +466,11 @@ const styles = StyleSheet.create({
     fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
   },
   envButton: {
-    borderRadius: 12,
-    marginBottom: 16,
+    borderRadius: getResponsiveSpacing(12),
+    marginBottom: responsive.isDesktop ? 0 : getResponsiveSpacing(16),
     overflow: 'hidden',
+    flex: responsive.isDesktop ? 1 : undefined,
+    minHeight: getResponsiveSpacing(100),
     // S'assurer que le bouton est cliquable
     pointerEvents: 'auto',
     // Ombre pour iOS
@@ -471,28 +496,33 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   envButtonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
+    flexDirection: responsive.isMobile ? 'column' : 'row',
+    alignItems: responsive.isMobile ? 'center' : 'center',
+    padding: getResponsiveSpacing(20),
+    textAlign: responsive.isMobile ? 'center' : 'left',
   },
   envButtonIcon: {
-    fontSize: 32,
-    marginRight: 16,
+    fontSize: getResponsiveFontSize(32),
+    marginRight: responsive.isMobile ? 0 : getResponsiveSpacing(16),
+    marginBottom: responsive.isMobile ? getResponsiveSpacing(8) : 0,
   },
   envButtonText: {
     flex: 1,
+    alignItems: responsive.isMobile ? 'center' : 'flex-start',
   },
   envButtonTitle: {
-    fontSize: 18,
+    fontSize: getResponsiveFontSize(18),
     fontWeight: '700',
     color: '#171717',
-    marginBottom: 4,
+    marginBottom: getResponsiveSpacing(4),
     fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
+    textAlign: responsive.isMobile ? 'center' : 'left',
   },
   envButtonSubtitle: {
-    fontSize: 14,
+    fontSize: getResponsiveFontSize(14),
     color: '#6B7280',
     fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
+    textAlign: responsive.isMobile ? 'center' : 'left',
   },
 
   // Actions
@@ -533,8 +563,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   emergencyText: {
-    fontSize: 14,
+    fontSize: getResponsiveFontSize(14),
     color: '#DC2626',
     fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
   },
-}); 
+});
