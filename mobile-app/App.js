@@ -44,13 +44,16 @@ export default function App() {
         // Environnement déjà configuré
         console.log('✅ Environnement trouvé:', envData.type.toUpperCase());
         setHasEnvironment(true);
-        setInitialRoute('Welcome'); // Aller directement à Welcome
       } else {
         // Pas d'environnement configuré
-        console.log('⚠️ Aucun environnement configuré, affichage de l\'intro');
+        console.log('⚠️ Aucun environnement configuré');
         setHasEnvironment(false);
-        setInitialRoute('Intro'); // Afficher l'intro
       }
+      
+      // Toujours commencer par l'écran d'introduction
+      console.log('📱 Affichage de l\'écran d\'introduction');
+      setInitialRoute('Intro');
+      
     } catch (error) {
       console.error('❌ Erreur lors de la vérification d\'environnement:', error);
       // En cas d'erreur, forcer l'affichage de l'intro
@@ -188,14 +191,14 @@ const loadingStyles = StyleSheet.create({
 // 
 // ✅ Vérification d'environnement au démarrage
 // ✅ Écran de chargement pendant la vérification
-// ✅ Navigation conditionnelle selon l'environnement
-// ✅ Intro forcée si pas d'environnement configuré
-// ✅ Accès direct à Welcome si environnement déjà configuré
+// ✅ Toujours commencer par l'écran d'introduction
+// ✅ Page d'intro affichée à chaque refresh/démarrage
+// ✅ Gestion des environnements préservée pour fonctionnalités avancées
 // 
 // 🚀 LOGIQUE DE DÉMARRAGE :
 // 
 // 1. App démarre → LoadingScreen
-// 2. Vérification environnement avec EnvironmentService
-// 3. Si configuré → Welcome directement
-// 4. Si pas configuré → IntroScreen obligatoire
+// 2. Vérification environnement avec EnvironmentService (en arrière-plan)
+// 3. Toujours → IntroScreen (page d'accueil principale)
+// 4. Utilisateur choisit environnement → Navigation vers onboarding/Welcome
 // 5. Après sélection environnement → Welcome
