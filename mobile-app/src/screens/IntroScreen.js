@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Platform,
   Alert,
-  StatusBar
+  StatusBar,
+  Linking
 } from 'react-native';
 
 // Import du wrapper pour optimisation mobile web
@@ -45,25 +46,59 @@ export default function IntroScreen({ navigation }) {
   };
 
   const handleEnvironmentSelect = async (environment) => {
+    console.log('🔘 Bouton cliqué pour environnement:', environment);
     setSelectedEnv(environment);
     
-    // Afficher une confirmation avec l'environnement sélectionné
-    const envName = environment === 'int' ? 'Intégration (Test)' : 'Production';
-    const envUrl = environment === 'int' ? 'api-int.paww.app' : 'api.paww.app';
+    // Si c'est l'environnement INT, démarrer l'onboarding directement
+    if (environment === 'int') {
+      try {
+        // Sauvegarder l'environnement sélectionné
+        await EnvironmentService.saveEnvironment(environment);
+        
+        // Mettre à jour l'état local
+        const envInfo = EnvironmentService.getEnvironmentInfo();
+        setCurrentEnvInfo(envInfo);
+        
+        console.log('✅ Environnement INT configuré');
+        console.log('🚀 Démarrage de l\'onboarding...');
+        
+        // Naviguer directement vers l'onboarding
+        navigation.navigate('Onboarding2');
+        
+      } catch (error) {
+        console.error('❌ Erreur lors de la configuration:', error);
+        Alert.alert(
+          'Erreur de configuration', 
+          `Impossible de configurer l'environnement d'intégration.\n\nErreur: ${error.message}`
+        );
+      }
+      setSelectedEnv(null);
+      return;
+    }
+    
+    // Pour la production, afficher une confirmation
+    const envName = 'Production';
+    const envUrl = 'api.paww.app';
+    
+    console.log('📱 Affichage de l\'alerte pour:', envName);
     
     Alert.alert(
       `Environnement ${envName}`,
-      `Configuration ${envName.toLowerCase()} :\n• API: ${envUrl}\n• Mode debug: ${environment === 'int' ? 'Activé' : 'Désactivé'}\n\nContinuer ?`,
+      `Configuration ${envName.toLowerCase()} :\n• API: ${envUrl}\n• Mode debug: Désactivé\n\nContinuer ?`,
       [
         {
           text: 'Annuler',
           style: 'cancel',
-          onPress: () => setSelectedEnv(null)
+          onPress: () => {
+            console.log('❌ Sélection annulée');
+            setSelectedEnv(null);
+          }
         },
         {
           text: 'Continuer',
           style: 'default',
           onPress: async () => {
+            console.log('✅ Confirmation de l\'environnement:', environment);
             try {
               // Sauvegarder l'environnement sélectionné
               await EnvironmentService.saveEnvironment(environment);
@@ -73,6 +108,7 @@ export default function IntroScreen({ navigation }) {
               setCurrentEnvInfo(envInfo);
               
               console.log(`✅ Environnement ${envName} configuré`);
+              console.log('🧭 Navigation vers Welcome...');
               
               // Navigation vers Welcome avec l'environnement configuré  
               navigation.navigate('Welcome');
@@ -204,7 +240,7 @@ export default function IntroScreen({ navigation }) {
             <View style={styles.destinationInfo}>
               <Text style={styles.destinationTitle}>⚙️ Configurations :</Text>
               <Text style={styles.destinationUrl}>
-                🧪 INT → API: api-int.paww.app • Debug activé
+                🧪 INT → Démarre l'onboarding • Mode test • Debug activé
               </Text>
               <Text style={styles.destinationUrl}>
                 🚀 PROD → API: api.paww.app • Analytics activé
@@ -214,14 +250,17 @@ export default function IntroScreen({ navigation }) {
             {/* Bouton INT */}
             <TouchableOpacity 
               style={[styles.envButton, styles.intButton]} 
-              onPress={() => handleEnvironmentSelect('int')}
+              onPress={() => {
+                console.log('🧪 Clic bouton INT détecté');
+                handleEnvironmentSelect('int');
+              }}
               activeOpacity={0.8}
             >
               <View style={styles.envButtonContent}>
                 <Text style={styles.envButtonIcon}>🧪</Text>
                 <View style={styles.envButtonText}>
                   <Text style={styles.envButtonTitle}>INTÉGRATION</Text>
-                  <Text style={styles.envButtonSubtitle}>Environnement de test • Mode debug • API de test</Text>
+                  <Text style={styles.envButtonSubtitle}>Démarre l'onboarding • Mode test • Debug activé</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -229,7 +268,10 @@ export default function IntroScreen({ navigation }) {
             {/* Bouton PROD */}
             <TouchableOpacity 
               style={[styles.envButton, styles.prodButton]} 
-              onPress={() => handleEnvironmentSelect('prod')}
+              onPress={() => {
+                console.log('🚀 Clic bouton PROD détecté');
+                handleEnvironmentSelect('prod');
+              }}
               activeOpacity={0.8}
             >
               <View style={styles.envButtonContent}>
@@ -403,6 +445,9 @@ const styles = StyleSheet.create({
   envButton: {
     borderRadius: 12,
     marginBottom: 16,
+    overflow: 'hidden',
+    // S'assurer que le bouton est cliquable
+    pointerEvents: 'auto',
     // Ombre pour iOS
     ...(Platform.OS === 'ios' && {
       shadowColor: '#000',

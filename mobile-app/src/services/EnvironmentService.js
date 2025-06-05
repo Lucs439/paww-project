@@ -9,7 +9,7 @@ class EnvironmentService {
         name: 'Intégration',
         apiUrl: 'https://api-int.paww.app',
         wsUrl: 'wss://ws-int.paww.app',
-        appUrl: 'https://int.paww.app', // URL de l'app d'intégration
+        appUrl: 'https://bright-mochi-58cbc0.netlify.app/', // URL de l'app d'intégration
         debug: true,
         logLevel: 'debug',
         features: {
