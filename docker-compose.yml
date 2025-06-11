@@ -47,6 +47,7 @@ services:
       DB_USER: paww_user
       DB_PASSWORD: paww_password
       INFLUX_URL: http://influxdb:8086
+      JWT_SECRET: paww_development_secret_key
     ports:
       - "3001:3001"
     depends_on:

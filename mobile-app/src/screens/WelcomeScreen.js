@@ -20,8 +20,8 @@ import { Logo, WelcomePets } from '../assets/illustrations';
 
 export default function WelcomeScreen({ navigation }) {
   const handleGetStarted = () => {
-    console.log('🚀 Navigation vers onboarding');
-    navigation.navigate('Onboarding2');
+    console.log('🚀 Navigation vers création de compte');
+    navigation.navigate('Signup');
   };
 
   const handleLogin = () => {

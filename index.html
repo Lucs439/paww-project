@@ -4,427 +4,143 @@
     <meta charset="utf-8" />
     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>🐾 PAWW - App Mobile</title>
-    <meta name="description" content="Application mobile pour les amoureux des animaux - L'amour, ça se suit de près !" />
-    <meta name="author" content="Lucas Compiano" />
+    <title>🐾 PAWW - L'amour, ça se suit de près !</title>
+    <meta name="description" content="Application mobile pour les amoureux des animaux" />
+    <meta name="author" content="PAWW Team" />
     
     <!-- Progressive Web App -->
     <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#9E6AFF" />
-    <link rel="apple-touch-icon" href="icon-192.png" />
+    <meta name="theme-color" content="#667eea" />
+    <link rel="apple-touch-icon" href="favicon.ico" />
     
-    <style id="expo-reset">
-        /* Custom fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Nunito:wght@300;400;600;700;800;900&display=swap');
-        
-        /* Smooth scrolling and modern reset */
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
+        html, body {
+            height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #2d3748;
-            background: #0F0F23;
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-        
-        /* Root element styling */
         #root {
-            position: relative;
-            min-height: 100vh;
-            z-index: 10;
-        }
-        
-        /* Animated background */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+            display: flex;
             height: 100%;
-            background: linear-gradient(-45deg, #0F0F23, #1a1a3a, #2d1b69, #9E6AFF);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            z-index: 1;
+            flex: 1;
         }
         
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        /* Floating elements */
-        .floating-elements {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
-            overflow: hidden;
-        }
-        
-        .floating-paw {
-            position: absolute;
-            font-size: 24px;
-            color: rgba(255, 255, 255, 0.1);
-            animation: float 20s infinite linear;
-        }
-        
-        .floating-paw:nth-child(1) { top: 10%; left: 10%; animation-delay: -2s; }
-        .floating-paw:nth-child(2) { top: 20%; left: 80%; animation-delay: -8s; font-size: 18px; }
-        .floating-paw:nth-child(3) { top: 60%; left: 15%; animation-delay: -15s; font-size: 30px; }
-        .floating-paw:nth-child(4) { top: 80%; left: 70%; animation-delay: -5s; }
-        .floating-paw:nth-child(5) { top: 30%; left: 50%; animation-delay: -12s; font-size: 20px; }
-        
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
-        
-        /* Enhanced loading styles */
         .loading {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #0F0F23 0%, #2d1b69 50%, #9E6AFF 100%);
-            color: white;
-            font-family: 'Nunito', sans-serif;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+            z-index: 9999;
+            transition: opacity 1s ease-out;
         }
         
         .loading-content {
             text-align: center;
-            animation: fadeInUp 1s ease-out;
         }
         
         .loading-logo {
             font-size: 4rem;
-            margin-bottom: 2rem;
-            animation: bounce 2s infinite;
+            margin-bottom: 1rem;
         }
         
         .loading-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientText 3s ease infinite;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
         }
         
         .loading-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.8;
-            margin-bottom: 3rem;
-            font-weight: 300;
-        }
-        
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid rgba(255,255,255,0.1);
-            border-top: 6px solid #FF6B6B;
-            border-right: 6px solid #4ECDC4;
-            border-radius: 50%;
-            animation: spinGlow 1.5s linear infinite;
-            margin: 0 auto 2rem;
-            box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
-        }
-        
-        .loading-progress {
-            width: 200px;
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-        
-        .loading-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #FF6B6B, #4ECDC4, #45B7D1);
-            border-radius: 2px;
-            animation: loadingBar 3s ease-in-out infinite;
-        }
-        
-        @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 53%, 80%, 100% { transform: translateY(0); }
-            40%, 43% { transform: translateY(-15px); }
-            70% { transform: translateY(-7px); }
-            90% { transform: translateY(-3px); }
-        }
-        
-        @keyframes gradientText {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes spinGlow {
-            0% { transform: rotate(0deg); box-shadow: 0 0 30px rgba(255, 107, 107, 0.3); }
-            25% { box-shadow: 0 0 30px rgba(78, 205, 196, 0.3); }
-            50% { transform: rotate(180deg); box-shadow: 0 0 30px rgba(69, 183, 209, 0.3); }
-            75% { box-shadow: 0 0 30px rgba(150, 206, 180, 0.3); }
-            100% { transform: rotate(360deg); box-shadow: 0 0 30px rgba(255, 107, 107, 0.3); }
-        }
-        
-        @keyframes loadingBar {
-            0% { width: 0%; }
-            50% { width: 70%; }
-            100% { width: 100%; }
-        }
-        
-        /* Noscript enhanced styling */
-        .noscript-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #0F0F23 0%, #2d1b69 50%, #9E6AFF 100%);
-            color: white;
-            text-align: center;
-            font-family: 'Nunito', sans-serif;
-            padding: 2rem;
-        }
-        
-        .noscript-content {
-            max-width: 500px;
-            animation: fadeInUp 1s ease-out;
-        }
-        
-        .noscript-logo {
-            font-size: 4rem;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
             margin-bottom: 2rem;
         }
         
-        .noscript-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #FF6B6B;
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #FFFFFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
         }
         
-        .noscript-text {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            opacity: 0.9;
-            margin-bottom: 1rem;
-        }
-        
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .loading-title {
-                font-size: 2rem;
-            }
-            
-            .loading-logo {
-                font-size: 3rem;
-            }
-            
-            .noscript-title {
-                font-size: 1.5rem;
-            }
-            
-            .noscript-logo {
-                font-size: 3rem;
-            }
-        }
-        
-        /* Scroll animations */
-        .scroll-indicator {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            animation: pulse 2s infinite;
-        }
-        
-        .scroll-arrow {
-            width: 30px;
-            height: 30px;
-            border-right: 3px solid rgba(255,255,255,0.8);
-            border-bottom: 3px solid rgba(255,255,255,0.8);
-            transform: rotate(45deg);
-            animation: scrollBounce 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-        
-        @keyframes scrollBounce {
-            0%, 20%, 50%, 80%, 100% { transform: rotate(45deg) translateY(0); }
-            40% { transform: rotate(45deg) translateY(-10px); }
-            60% { transform: rotate(45deg) translateY(-5px); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
     <link rel="icon" href="/favicon.ico" />
 </head>
 
 <body>
-    <!-- Animated background -->
-    <div class="animated-bg"></div>
-    
-    <!-- Floating elements -->
-    <div class="floating-elements">
-        <div class="floating-paw">🐾</div>
-        <div class="floating-paw">🐕</div>
-        <div class="floating-paw">🐾</div>
-        <div class="floating-paw">🐱</div>
-        <div class="floating-paw">🐾</div>
-    </div>
-    
-    <!-- Enhanced noscript -->
     <noscript>
-        <div class="noscript-container">
-            <div class="noscript-content">
-                <div class="noscript-logo">🐾</div>
-                <h1 class="noscript-title">PAWW</h1>
-                <p class="noscript-text">Vous devez activer JavaScript pour utiliser cette application.</p>
-                <p class="noscript-text">You need to enable JavaScript to run this app.</p>
-                <div style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 12px;">
-                    <strong>L'amour, ça se suit de près ! 💕</strong>
-                </div>
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            <div>
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🐾</div>
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">PAWW</h1>
+                <p style="font-size: 1.2rem;">Vous devez activer JavaScript pour utiliser cette application.</p>
             </div>
         </div>
     </noscript>
     
-    <!-- Enhanced loading state -->
     <div id="loading" class="loading">
         <div class="loading-content">
             <div class="loading-logo">🐾</div>
             <h1 class="loading-title">PAWW</h1>
             <p class="loading-subtitle">L'amour, ça se suit de près !</p>
             <div class="loading-spinner"></div>
-            <div class="loading-progress">
-                <div class="loading-bar"></div>
-            </div>
         </div>
     </div>
     
-    <!-- Scroll indicator -->
-    <div class="scroll-indicator" id="scrollIndicator">
-        <div class="scroll-arrow"></div>
-    </div>
-    
-    <!-- The root element for your Expo app -->
-    <div id="root"></div>
+    <div id="root" style="display: none;"></div>
     
     <script>
-        // Enhanced loading management
+        // Gestion simple du chargement
         let appLoaded = false;
         
-        // Hide loading when React app mounts
         function hideLoading() {
             const loading = document.getElementById('loading');
-            const scrollIndicator = document.getElementById('scrollIndicator');
+            const root = document.getElementById('root');
             
             if (loading && !appLoaded) {
                 appLoaded = true;
-                
-                // Fade out loading screen
                 loading.style.opacity = '0';
-                loading.style.transition = 'opacity 0.8s ease-out';
                 
                 setTimeout(() => {
                     loading.style.display = 'none';
-                    // Show scroll indicator after app loads
-                    if (scrollIndicator) {
-                        scrollIndicator.style.display = 'block';
-                    }
+                    root.style.display = 'block';
                 }, 800);
             }
         }
         
-        // Multiple triggers for hiding loading
+        // Déclencheurs pour masquer le chargement
         window.addEventListener('load', () => {
-            setTimeout(hideLoading, 1200);
+            setTimeout(hideLoading, 1000);
         });
         
-        // Listen for React app mount
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(hideLoading, 2000);
+            setTimeout(hideLoading, 1500);
         });
         
-        // Force hide after maximum time
-        setTimeout(hideLoading, 5000);
-        
-        // Enhanced scroll behavior
-        let ticking = false;
-        
-        function updateScrollIndicator() {
-            const scrollIndicator = document.getElementById('scrollIndicator');
-            if (scrollIndicator) {
-                const scrolled = window.pageYOffset;
-                const rate = scrolled / (document.body.scrollHeight - window.innerHeight);
-                
-                if (rate > 0.1) {
-                    scrollIndicator.style.opacity = '0';
-                } else {
-                    scrollIndicator.style.opacity = '1';
-                }
-            }
-        }
-        
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    updateScrollIndicator();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
-        
-        // Add smooth scroll to any anchor links
-        document.addEventListener('click', (e) => {
-            if (e.target.tagName === 'A' && e.target.getAttribute('href').startsWith('#')) {
-                e.preventDefault();
-                const target = document.querySelector(e.target.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
+        // Force masquer après 3 secondes
+        setTimeout(hideLoading, 3000);
     </script>
     
-    <script src="/_expo/static/js/web/index-5f21908b6b4148194087f76dfc646a6e.js" defer></script>
+    <!-- Script sera généré automatiquement lors du build -->
 </body>
 </html> 

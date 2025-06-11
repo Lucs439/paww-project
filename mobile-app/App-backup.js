@@ -1,4 +1,5 @@
-// App.js - Application PAWW avec parcours complet d'onboarding
+// App.js - Sauvegarde de la version complète
+
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -20,7 +21,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="Splash"
+        initialRouteName="Welcome"
         screenOptions={{
           headerShown: false,
           gestureEnabled: true,
@@ -40,7 +41,7 @@ export default function App() {
           },
         }}
       >
-        {/* 🎬 Écran de splash d'introduction */}
+        {/* Écran de splash */}
         <Stack.Screen 
           name="Splash" 
           component={SplashScreen}
@@ -49,44 +50,7 @@ export default function App() {
           }}
         />
         
-        {/* 📖 Écrans d'onboarding (maintenant en premier) */}
-        <Stack.Screen 
-          name="Onboarding2" 
-          component={OnboardingScreen2}
-          options={{
-            title: 'Onboarding 2',
-          }}
-        />
-        <Stack.Screen 
-          name="Onboarding3" 
-          component={OnboardingScreen3}
-          options={{
-            title: 'Onboarding 3',
-          }}
-        />
-        <Stack.Screen 
-          name="Onboarding4" 
-          component={OnboardingScreen4}
-          options={{
-            title: 'Onboarding 4',
-          }}
-        />
-        <Stack.Screen 
-          name="Onboarding5" 
-          component={OnboardingScreen5}
-          options={{
-            title: 'Onboarding 5',
-          }}
-        />
-        <Stack.Screen 
-          name="Onboarding6" 
-          component={OnboardingScreen6}
-          options={{
-            title: 'Onboarding 6',
-          }}
-        />
-        
-        {/* 🏠 Écran d'accueil (maintenant après onboarding) */}
+        {/* Écran d'accueil */}
         <Stack.Screen 
           name="Welcome" 
           component={WelcomeScreen}
@@ -95,7 +59,14 @@ export default function App() {
           }}
         />
         
-        {/* 🔐 Écran de connexion */}
+        {/* Écrans d'onboarding */}
+        <Stack.Screen name="Onboarding2" component={OnboardingScreen2} />
+        <Stack.Screen name="Onboarding3" component={OnboardingScreen3} />
+        <Stack.Screen name="Onboarding4" component={OnboardingScreen4} />
+        <Stack.Screen name="Onboarding5" component={OnboardingScreen5} />
+        <Stack.Screen name="Onboarding6" component={OnboardingScreen6} />
+        
+        {/* Écran de connexion */}
         <Stack.Screen 
           name="Login" 
           component={LoginScreen}
@@ -104,7 +75,7 @@ export default function App() {
           }}
         />
         
-        {/* ✍️ Écran d'inscription */}
+        {/* Écran d'inscription */}
         <Stack.Screen 
           name="Signup" 
           component={SignupScreen}
@@ -115,5 +86,4 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
-
+} 

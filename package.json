@@ -10,9 +10,7 @@
       "backend:install": "cd backend && npm install",
       "mobile:start": "cd mobile-app && npm start",
       "mobile:install": "cd mobile-app && npm install",
-      "web:start": "cd web-app && npm start",
-      "web:install": "cd web-app && npm install",
-      "install:all": "npm run backend:install && npm run mobile:install && npm run web:install",
+      "install:all": "npm run backend:install && npm run mobile:install",
       "docker:up": "docker-compose up -d",
       "docker:down": "docker-compose down",
       "docker:logs": "docker-compose logs -f",
@@ -28,7 +26,7 @@
       "monitoring",
       "mobile-app"
     ],
-    "author": "Ton nom",
+    "author": "PAWW Team",
     "license": "MIT",
     "devDependencies": {
       "concurrently": "^8.2.0"

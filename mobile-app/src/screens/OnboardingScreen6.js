@@ -21,11 +21,11 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 export default function OnboardingScreen6({ navigation }) {
   const handleFinish = () => {
-    navigation.navigate('Login');
+    navigation.navigate('Welcome');
   };
 
   const handleSkip = () => {
-    navigation.navigate('Login');
+    navigation.navigate('Welcome');
   };
 
   return (
@@ -72,7 +72,7 @@ export default function OnboardingScreen6({ navigation }) {
               onPress={handleFinish}
               activeOpacity={0.8}
             >
-              <Text style={styles.finishButtonText}>Commencer</Text>
+              <Text style={styles.finishButtonText}>Continuer</Text>
             </TouchableOpacity>
           </View>
         </View>

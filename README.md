@@ -1,146 +1,108 @@
-# 🐾 PAWW - Pet Animal Wearable Watch
+# 🐾 PAWW - L'amour, ça se suit de près !
 
-PAWW est une application innovante de suivi d'animaux de compagnie utilisant des dispositifs connectés pour surveiller leur santé et leur bien-être.
+Application mobile complète pour le suivi et la gestion des animaux domestiques.
 
-## 🚀 Fonctionnalités
+## 📱 Structure du projet
 
-- 👤 Authentification complète (inscription, connexion, vérification email)
-- 🔒 Sécurité renforcée (JWT, hachage des mots de passe)
-- 📱 API RESTful
-- 🗃️ Base de données PostgreSQL avec Sequelize
-- 🐳 Conteneurisation avec Docker
+```
+paww-project/
+├── 📱 mobile-app/          # Application React Native/Expo
+├── 🔧 backend/             # API Node.js
+├── 🗄️ database/           # Scripts de base de données
+├── 🐳 docker-compose.yml   # Configuration Docker
+└── 🌐 index.html          # Page d'accueil web
+```
 
-## 🛠️ Technologies
+## 🚀 Démarrage rapide
 
-- Backend: Node.js, Express
-- Base de données: PostgreSQL
-- ORM: Sequelize
-- Authentification: JWT
-- Validation: express-validator
-- Conteneurisation: Docker, docker-compose
-
-## 📦 Installation
-
-1. Cloner le repository :
+### Avec Docker (Recommandé)
 ```bash
-git clone https://github.com/votre-username/paww-project.git
-cd paww-project
+# Lancer tous les services
+npm run docker:up
+
+# Voir les logs
+npm run docker:logs
+
+# Arrêter les services
+npm run docker:down
 ```
 
-2. Installer les dépendances :
+### Développement local
 ```bash
-# Backend
-cd backend
-npm install
+# Installer toutes les dépendances
+npm run install:all
 
-# Frontend (à venir)
-cd ../frontend
-npm install
+# Lancer le backend et l'app mobile
+npm run dev
 ```
 
-3. Configuration :
-```bash
-# Copier le fichier d'exemple de configuration
-cp .env.example .env
+## 🛠️ Services disponibles
 
-# Éditer le fichier .env avec vos configurations
-nano .env
-```
+- **Frontend Web** : http://localhost:3000
+- **API Backend** : http://localhost:3001
+- **Base de données** : PostgreSQL sur le port 5432
+- **Métriques** : InfluxDB sur le port 8086
+- **Cache** : Redis sur le port 6379
 
-4. Démarrer avec Docker :
-```bash
-docker-compose up -d
-```
+## 📱 Application mobile
 
-## 🔧 Configuration
+L'application mobile est développée avec React Native et Expo. Elle permet :
+- 📍 Suivi de la localisation des animaux
+- 📊 Monitoring de la santé
+- 📸 Partage de photos
+- 🔔 Notifications push
+- 👥 Gestion de profils multiples
 
-Variables d'environnement requises :
+## 🔧 Backend API
 
-```env
-# Server
-PORT=3001
-NODE_ENV=development
+API REST développée avec Node.js qui gère :
+- 🔐 Authentification JWT
+- 📍 Données de géolocalisation
+- 📊 Métriques de santé
+- 🖼️ Upload de fichiers
+- 🔔 Notifications push
 
-# Database
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=paww_db
-DB_USER=paww_user
-DB_PASSWORD=paww_password
+## 🗄️ Base de données
 
-# JWT
-JWT_SECRET=votre_secret_jwt_super_securise
-JWT_EXPIRES_IN=24h
-
-# Email (à configurer)
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_USER=user@example.com
-SMTP_PASS=your_password
-```
-
-## 📚 Documentation API
-
-### Authentification
-
-#### 🔑 Inscription
-```http
-POST /api/auth/register
-Content-Type: application/json
-
-{
-  "email": "user@example.com",
-  "password": "Password123",
-  "confirmPassword": "Password123",
-  "firstName": "John",
-  "lastName": "Doe"
-}
-```
-
-#### 🔓 Connexion
-```http
-POST /api/auth/login
-Content-Type: application/json
-
-{
-  "email": "user@example.com",
-  "password": "Password123"
-}
-```
-
-#### ✉️ Vérification Email
-```http
-POST /api/auth/verify-email
-Content-Type: application/json
-
-{
-  "email": "user@example.com",
-  "code": "123456"
-}
-```
+- **PostgreSQL** : Données principales (utilisateurs, animaux, profils)
+- **InfluxDB** : Métriques temporelles (localisation, santé)
+- **Redis** : Cache et sessions
 
 ## 🧪 Tests
 
 ```bash
-# Exécuter les tests
-cd backend
-npm test
+# Lancer tous les tests
+npm run test
+
+# Tests backend uniquement
+npm run backend:test
+
+# Tests mobile uniquement
+npm run mobile:test
+```
+
+## 📦 Build et déploiement
+
+```bash
+# Build de l'app mobile
+cd mobile-app && npx eas build
+
+# Build du backend
+cd backend && npm run build
 ```
 
 ## 🤝 Contribution
 
-Les contributions sont les bienvenues ! N'hésitez pas à :
-
 1. Fork le projet
-2. Créer une branche (`git checkout -b feature/amazing-feature`)
-3. Commit vos changements (`git commit -m 'feat: Add amazing feature'`)
-4. Push sur la branche (`git push origin feature/amazing-feature`)
+2. Créer une branche (`git checkout -b feature/AmazingFeature`)
+3. Commit les changements (`git commit -m 'Add some AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
 5. Ouvrir une Pull Request
 
-## 📝 License
+## 📄 Licence
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
-## ✨ Auteurs
+---
 
-- Lucas Compiano - Développeur Principal
+Développé avec ❤️ par l'équipe PAWW

@@ -17,10 +17,6 @@ api.interceptors.request.use(async (config) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
-    // Ajouter l'environnement dans les headers pour debug
-    config.headers['X-App-Environment'] = ENV.appName;
-    
   } catch (error) {
     console.error('Erreur lors de la récupération du token:', error);
   }

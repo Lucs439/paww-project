@@ -1,41 +1,17 @@
-// src/components/EnvironmentBadge.js - Badge d'affichage de l'environnement
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
-import EnvironmentService from '../services/EnvironmentService';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 export default function EnvironmentBadge({ style, showDetails = false }) {
-  const [envInfo, setEnvInfo] = useState(null);
-
-  useEffect(() => {
-    loadEnvironmentInfo();
-  }, []);
-
-  const loadEnvironmentInfo = async () => {
-    try {
-      await EnvironmentService.loadEnvironment();
-      const info = EnvironmentService.getEnvironmentInfo();
-      setEnvInfo(info);
-    } catch (error) {
-      console.error('❌ Erreur lors du chargement de l\'environnement:', error);
-    }
-  };
-
-  if (!envInfo || envInfo.type === 'Non configuré') {
+  // Ne rien afficher en production
+  if (process.env.NODE_ENV === 'production') {
     return null;
   }
 
-  const isInt = envInfo.type === 'INT';
-  const badgeStyle = isInt ? styles.intBadge : styles.prodBadge;
-  const icon = isInt ? '🧪' : '🚀';
-
   return (
-    <View style={[styles.container, badgeStyle, style]}>
-      <Text style={styles.icon}>{icon}</Text>
-      <Text style={styles.text}>{envInfo.type}</Text>
+    <View style={[styles.container, style]}>
+      <Text style={styles.text}>DEV</Text>
       {showDetails && (
-        <Text style={styles.details}>
-          {EnvironmentService.getApiUrl()}
-        </Text>
+        <Text style={styles.details}>Development</Text>
       )}
     </View>
   );
@@ -43,35 +19,20 @@ export default function EnvironmentBadge({ style, showDetails = false }) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    borderWidth: 1,
-  },
-  intBadge: {
-    backgroundColor: '#EEF2FF',
-    borderColor: '#6366F1',
-  },
-  prodBadge: {
-    backgroundColor: '#F0FDF4',
-    borderColor: '#22C55E',
-  },
-  icon: {
-    fontSize: 14,
-    marginRight: 6,
+    backgroundColor: 'rgba(255, 165, 0, 0.8)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    alignSelf: 'flex-start',
   },
   text: {
-    fontSize: 12,
+    color: '#FFFFFF',
+    fontSize: 10,
     fontWeight: '600',
-    color: '#171717',
-    fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
   },
   details: {
-    fontSize: 10,
-    color: '#6B7280',
-    marginLeft: 8,
-    fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
+    color: '#FFFFFF',
+    fontSize: 8,
+    marginTop: 2,
   },
 }); 
