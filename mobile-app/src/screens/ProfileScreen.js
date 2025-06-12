@@ -50,10 +50,10 @@ const ProfileScreen = ({ navigation }) => {
       // Petit délai pour s'assurer que le logout est complètement traité
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      // Rediriger vers l'écran de connexion en remplaçant complètement la pile de navigation
+      // Rediriger vers l'écran de bienvenue en remplaçant complètement la pile de navigation
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Login' }],
+        routes: [{ name: 'Welcome' }],
       });
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);

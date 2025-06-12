@@ -131,7 +131,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isUserLoggedIn ? "MainApp" : "Login"}
+        initialRouteName={isUserLoggedIn ? "MainApp" : "Welcome"}
         screenOptions={{
           headerShown: false,
           gestureEnabled: true,
