@@ -6,6 +6,7 @@ import {
   SafeAreaView, 
   TouchableOpacity,
   Platform,
+  Image,
 } from 'react-native';
 
 export default function WelcomeScreen({ navigation }) {
@@ -37,11 +38,13 @@ export default function WelcomeScreen({ navigation }) {
           </Text>
         </View>
 
-        {/* Illustration simplifiée */}
+        {/* Illustration */}
         <View style={styles.illustrationContainer}>
-          <View style={styles.illustrationPlaceholder}>
-            <Text style={styles.illustrationText}>🐱 🐶</Text>
-          </View>
+          <Image 
+            source={require('../assets/illustrations/Illu page 1.jpg')}
+            style={styles.illustration}
+            resizeMode="contain"
+          />
         </View>
 
         {/* Boutons */}
@@ -132,16 +135,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 40,
   },
-  illustrationPlaceholder: {
-    width: 200,
-    height: 150,
+  illustration: {
+    width: 300,
+    height: 200,
     borderRadius: 20,
-    backgroundColor: '#F3F4F6',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  illustrationText: {
-    fontSize: 48,
   },
   
   // Boutons

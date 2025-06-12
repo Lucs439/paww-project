@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   View, 
   Text, 
@@ -8,11 +8,16 @@ import {
   Platform,
   StatusBar
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { authService } from '../services/authService';
 
 // Import du logo
 import { Logo } from '../assets/illustrations';
 
 export default function SplashScreen({ navigation }) {
+  // État pour gérer la navigation
+  const [navigationReady, setNavigationReady] = useState(false);
+
   // Animations
   const logoScale = new Animated.Value(0);
   const logoOpacity = new Animated.Value(0);
@@ -20,6 +25,44 @@ export default function SplashScreen({ navigation }) {
   const dot1Opacity = new Animated.Value(0.3);
   const dot2Opacity = new Animated.Value(0.3);
   const dot3Opacity = new Animated.Value(0.3);
+
+  // Fonction pour gérer la navigation selon l'état de l'utilisateur
+  const handleNavigation = async () => {
+    try {
+      // Vérifier si c'est la première fois
+      const hasSeenOnboarding = await AsyncStorage.getItem('hasSeenOnboarding');
+      const isFirstTime = hasSeenOnboarding === null;
+
+      // Vérifier l'état de connexion
+      const authStatus = await authService.checkAuthStatus();
+      let isLoggedIn = false;
+
+      if (authStatus.isLoggedIn) {
+        // Vérifier si le token est encore valide
+        const isTokenValid = await authService.verifyToken();
+        isLoggedIn = isTokenValid;
+      }
+
+      // Déterminer la destination
+      if (isLoggedIn) {
+        // Utilisateur connecté → aller à l'app principale
+        console.log('🏠 Utilisateur connecté, redirection vers MainApp');
+        navigation.replace('MainApp');
+      } else if (isFirstTime) {
+        // Première fois → aller au tutoriel (onboarding)
+        console.log('🎯 Première visite, redirection vers Onboarding');
+        navigation.replace('Onboarding2');
+      } else {
+        // Utilisateur non connecté qui a déjà vu le tuto → aller au welcome
+        console.log('👋 Retour utilisateur, redirection vers Welcome');
+        navigation.replace('Welcome');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la navigation depuis Splash:', error);
+      // En cas d'erreur, aller vers le welcome par défaut
+      navigation.replace('Welcome');
+    }
+  };
 
   useEffect(() => {
     // Animation du logo
@@ -88,9 +131,9 @@ export default function SplashScreen({ navigation }) {
     // Démarrer l'animation des points après 1 seconde
     const dotsTimer = setTimeout(animateLoadingDots, 1000);
 
-    // Navigation vers Onboarding après 3 secondes
-    const timer = setTimeout(() => {
-      navigation.replace('Onboarding2');
+    // Déterminer la destination et naviguer après 3 secondes
+    const timer = setTimeout(async () => {
+      await handleNavigation();
     }, 3000);
 
     return () => {

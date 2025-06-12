@@ -10,6 +10,7 @@ import {
   Image,
   Dimensions
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Import du wrapper pour optimisation mobile web
 import MobileWebWrapper from '../components/MobileWebWrapper';
@@ -20,12 +21,28 @@ import { Onboarding6Image, Vector6 } from '../assets/illustrations';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 export default function OnboardingScreen6({ navigation }) {
-  const handleFinish = () => {
-    navigation.navigate('Welcome');
+  const handleFinish = async () => {
+    try {
+      // Marquer que l'utilisateur a vu l'onboarding
+      await AsyncStorage.setItem('hasSeenOnboarding', 'true');
+      console.log('✅ Onboarding terminé, marqué comme vu');
+      navigation.navigate('Welcome');
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde de l\'onboarding:', error);
+      navigation.navigate('Welcome');
+    }
   };
 
-  const handleSkip = () => {
-    navigation.navigate('Welcome');
+  const handleSkip = async () => {
+    try {
+      // Marquer que l'utilisateur a vu l'onboarding même en skip
+      await AsyncStorage.setItem('hasSeenOnboarding', 'true');
+      console.log('⏭️ Onboarding skippé, marqué comme vu');
+      navigation.navigate('Welcome');
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde de l\'onboarding:', error);
+      navigation.navigate('Welcome');
+    }
   };
 
   return (

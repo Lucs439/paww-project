@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authService } from './src/services/authService';
 
 // Import des écrans principaux
@@ -87,14 +88,19 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [isFirstTime, setIsFirstTime] = useState(null); // null = pas encore vérifié, true = première fois, false = déjà vu
 
-  // Vérifier si l'utilisateur est déjà connecté
+  // Vérifier si l'utilisateur est déjà connecté et si c'est sa première fois
   useEffect(() => {
-    checkUserLogin();
+    checkAppState();
   }, []);
 
-  const checkUserLogin = async () => {
+  const checkAppState = async () => {
     try {
+      // Vérifier si c'est la première fois que l'utilisateur lance l'app
+      const hasSeenOnboarding = await AsyncStorage.getItem('hasSeenOnboarding');
+      setIsFirstTime(hasSeenOnboarding === null);
+      
       // Vérifier l'état de connexion avec le service d'auth
       const authStatus = await authService.checkAuthStatus();
       
@@ -116,22 +122,33 @@ export default function App() {
         setCurrentUser(null);
       }
     } catch (error) {
-      console.log('Erreur lors de la vérification de connexion:', error);
+      console.log('Erreur lors de la vérification de l\'état de l\'app:', error);
       setIsUserLoggedIn(false);
       setCurrentUser(null);
+      setIsFirstTime(true); // Par défaut, considérer comme première fois en cas d'erreur
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isFirstTime === null) {
     return <LoadingScreen />;
+  }
+
+  // Déterminer la route initiale selon l'état
+  let initialRoute;
+  if (isUserLoggedIn) {
+    initialRoute = "Splash"; // Splash redirigera vers MainApp
+  } else if (isFirstTime) {
+    initialRoute = "Splash"; // Splash redirigera vers Onboarding2
+  } else {
+    initialRoute = "Splash"; // Splash redirigera vers Welcome
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={isUserLoggedIn ? "MainApp" : "Welcome"}
+        initialRouteName={initialRoute}
         screenOptions={{
           headerShown: false,
           gestureEnabled: true,
