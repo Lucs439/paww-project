@@ -1,5 +1,7 @@
 [build]
-  publish = "."
+  base = "mobile-app"
+  publish = "mobile-app/dist"
+  command = "npm install && npm run build:web"
   
 [[redirects]]
   from = "/*"
