@@ -1,0 +1,17 @@
+{
+  "short_name": "PAWW",
+  "name": "PAWW - Collier connecté pour animaux",
+  "description": "Application de gestion du collier connecté PAWW pour le suivi et la sécurité de vos animaux de compagnie",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#9E6AFF",
+  "background_color": "#FFFFFF",
+  "orientation": "portrait"
+} 

@@ -10,6 +10,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { authService } from '../services/authService';
 
 export default function SignupScreen({ navigation }) {
@@ -22,7 +23,9 @@ export default function SignupScreen({ navigation }) {
   });
 
   const [errors, setErrors] = useState({});
-  const [passwordStrength, setPasswordStrength] = useState({ level: 'none', score: 0 });
+  const [passwordStrength, setPasswordStrength] = useState({ level: '', score: 0, feedback: [] });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
   // Limites de caractères
@@ -153,16 +156,7 @@ export default function SignupScreen({ navigation }) {
 
       if (result.success) {
         // 🎉 Inscription réussie - redirection vers l'app principale
-        Alert.alert(
-          'Inscription réussie !',
-          'Bienvenue dans PAWW !',
-          [
-            {
-              text: 'Continuer',
-              onPress: () => navigation.navigate('MainApp'),
-            },
-          ]
-        );
+        navigation.navigate('MainApp');
       } else {
         // Afficher l'erreur retournée par le backend
         Alert.alert(
@@ -182,7 +176,7 @@ export default function SignupScreen({ navigation }) {
   };
 
   const handleBackToLogin = () => {
-    navigation.navigate('Welcome');
+    navigation.navigate('Login');
   };
 
   // Style conditionnel pour les champs avec erreur
@@ -212,7 +206,12 @@ export default function SignupScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.content}>
           {/* Header */}
           <View style={styles.header}>
@@ -286,14 +285,26 @@ export default function SignupScreen({ navigation }) {
               <Text style={[styles.label, errors.password && styles.labelError]}>
                 Mot de passe
               </Text>
-              <TextInput
-                style={getInputStyle('password')}
-                value={formData.password}
-                onChangeText={(value) => handleInputChange('password', value)}
-                placeholder="••••••••"
-                placeholderTextColor="#9CA3AF"
-                secureTextEntry
-              />
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={[getInputStyle('password'), styles.passwordInput]}
+                  value={formData.password}
+                  onChangeText={(value) => handleInputChange('password', value)}
+                  placeholder="••••••••"
+                  placeholderTextColor="#9CA3AF"
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity 
+                  style={styles.eyeButton}
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  <Ionicons 
+                    name={showPassword ? "eye-off" : "eye"} 
+                    size={20} 
+                    color="#9CA3AF" 
+                  />
+                </TouchableOpacity>
+              </View>
               
               {/* Indicateur de force du mot de passe */}
               {formData.password.length > 0 && (
@@ -328,14 +339,26 @@ export default function SignupScreen({ navigation }) {
               <Text style={[styles.label, errors.confirmPassword && styles.labelError]}>
                 Confirmer le mot de passe
               </Text>
-              <TextInput
-                style={getInputStyle('confirmPassword')}
-                value={formData.confirmPassword}
-                onChangeText={(value) => handleInputChange('confirmPassword', value)}
-                placeholder="••••••••"
-                placeholderTextColor="#9CA3AF"
-                secureTextEntry
-              />
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={[getInputStyle('confirmPassword'), styles.passwordInput]}
+                  value={formData.confirmPassword}
+                  onChangeText={(value) => handleInputChange('confirmPassword', value)}
+                  placeholder="••••••••"
+                  placeholderTextColor="#9CA3AF"
+                  secureTextEntry={!showConfirmPassword}
+                />
+                <TouchableOpacity 
+                  style={styles.eyeButton}
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  <Ionicons 
+                    name={showConfirmPassword ? "eye-off" : "eye"} 
+                    size={20} 
+                    color="#9CA3AF" 
+                  />
+                </TouchableOpacity>
+              </View>
               {errors.confirmPassword && (
                 <Text style={styles.errorText}>{errors.confirmPassword}</Text>
               )}
@@ -350,6 +373,7 @@ export default function SignupScreen({ navigation }) {
             ]} 
             onPress={handleSignup}
             disabled={!isFormValid}
+            activeOpacity={0.7}
           >
             <Text style={[
               styles.signupButtonText,
@@ -374,6 +398,18 @@ export default function SignupScreen({ navigation }) {
             <Text style={styles.linkText}>Conditions d'utilisation</Text>{' '}
             et notre <Text style={styles.linkText}>Politique de confidentialité</Text>
           </Text>
+
+          {/* Lien de connexion */}
+          <TouchableOpacity 
+            onPress={() => navigation.navigate('Login')} 
+            style={styles.loginContainer}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.loginText}>
+              Vous avez déjà un compte ?{' '}
+              <Text style={styles.loginLink}>Se connecter</Text>
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -385,11 +421,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
+  scrollView: {
+    flex: 1,
+  },
   scrollContent: {
-    flexGrow: 1,
+    paddingBottom: 40,
   },
   content: {
-    flex: 1,
     paddingHorizontal: 24,
     paddingTop: Platform.OS === 'ios' ? 20 : 40,
   },
@@ -535,5 +573,32 @@ const styles = StyleSheet.create({
   linkText: {
     color: '#9E6AFF',
     fontWeight: '500',
+  },
+  
+  // Mot de passe
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordInput: {
+    flex: 1,
+  },
+  eyeButton: {
+    padding: 8,
+  },
+  
+  // Lien de connexion
+  loginContainer: {
+    marginTop: 16,
+    alignItems: 'center',
+  },
+  loginText: {
+    fontSize: 14,
+    color: '#6B7280',
+    fontWeight: '500',
+  },
+  loginLink: {
+    color: '#9E6AFF',
+    fontWeight: '600',
   },
 }); 

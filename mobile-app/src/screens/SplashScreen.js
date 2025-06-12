@@ -72,13 +72,13 @@ export default function SplashScreen({ navigation }) {
         Animated.timing(logoOpacity, {
           toValue: 1,
           duration: 800,
-          useNativeDriver: true,
+          useNativeDriver: Platform.OS !== 'web',
         }),
         Animated.spring(logoScale, {
           toValue: 1,
           tension: 80,
           friction: 8,
-          useNativeDriver: true,
+          useNativeDriver: Platform.OS !== 'web',
         }),
       ]),
       // Apparition du titre après un délai
@@ -86,7 +86,7 @@ export default function SplashScreen({ navigation }) {
         toValue: 1,
         duration: 600,
         delay: 200,
-        useNativeDriver: true,
+        useNativeDriver: Platform.OS !== 'web',
       }),
     ]).start();
 
@@ -96,33 +96,33 @@ export default function SplashScreen({ navigation }) {
         Animated.timing(dot1Opacity, {
           toValue: 1,
           duration: 400,
-          useNativeDriver: true,
+          useNativeDriver: Platform.OS !== 'web',
         }),
         Animated.timing(dot2Opacity, {
           toValue: 1,
           duration: 400,
-          useNativeDriver: true,
+          useNativeDriver: Platform.OS !== 'web',
         }),
         Animated.timing(dot3Opacity, {
           toValue: 1,
           duration: 400,
-          useNativeDriver: true,
+          useNativeDriver: Platform.OS !== 'web',
         }),
         Animated.parallel([
           Animated.timing(dot1Opacity, {
             toValue: 0.3,
             duration: 400,
-            useNativeDriver: true,
+            useNativeDriver: Platform.OS !== 'web',
           }),
           Animated.timing(dot2Opacity, {
             toValue: 0.3,
             duration: 400,
-            useNativeDriver: true,
+            useNativeDriver: Platform.OS !== 'web',
           }),
           Animated.timing(dot3Opacity, {
             toValue: 0.3,
             duration: 400,
-            useNativeDriver: true,
+            useNativeDriver: Platform.OS !== 'web',
           }),
         ]),
       ]).start(() => animateLoadingDots());
