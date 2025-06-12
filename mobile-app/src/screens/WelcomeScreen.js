@@ -6,17 +6,7 @@ import {
   SafeAreaView, 
   TouchableOpacity,
   Platform,
-  Image
 } from 'react-native';
-
-// Import du wrapper pour optimisation mobile web
-import MobileWebWrapper from '../components/MobileWebWrapper';
-
-// Import du badge d'environnement
-import EnvironmentBadge from '../components/EnvironmentBadge';
-
-// Import des SVG et images
-import { Logo, WelcomePets } from '../assets/illustrations';
 
 export default function WelcomeScreen({ navigation }) {
   const handleGetStarted = () => {
@@ -31,60 +21,55 @@ export default function WelcomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <MobileWebWrapper hasBottomButton={true}>
-        {/* Badge d'environnement en haut à droite */}
-        <EnvironmentBadge style={styles.environmentBadge} showDetails={false} />
-        
-        <View style={styles.content}>
-          {/* Logo PAWW */}
-          <View style={styles.logoContainer}>
-            <Logo width={65} height={65} />
-          </View>
-
-          {/* Titre et slogan */}
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Paww</Text>
-            <Text style={styles.subtitle}>
-              L'amour, ça se{'\n'}suit de près !
-            </Text>
-          </View>
-
-          {/* Illustration des animaux */}
-          <View style={styles.illustrationContainer}>
-            <Image 
-              source={WelcomePets} 
-              style={styles.illustrationImage}
-              resizeMode="contain"
-            />
-          </View>
-
-          {/* Boutons */}
-          <View style={styles.buttonContainer}>
-            {/* Bouton principal */}
-            <TouchableOpacity 
-              style={styles.primaryButton} 
-              onPress={handleGetStarted}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.primaryButtonText}>
-                Création de mon compte
-              </Text>
-            </TouchableOpacity>
-            
-            {/* Texte de connexion */}
-            <TouchableOpacity 
-              onPress={handleLogin} 
-              style={styles.loginContainer}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.loginText}>
-                Vous avez déjà un compte ? 
-                <Text style={styles.loginLink}> Connexion</Text>
-              </Text>
-            </TouchableOpacity>
+      <View style={styles.content}>
+        {/* Logo PAWW simplifié */}
+        <View style={styles.logoContainer}>
+          <View style={styles.logoPlaceholder}>
+            <Text style={styles.logoText}>PAWW</Text>
           </View>
         </View>
-      </MobileWebWrapper>
+
+        {/* Titre et slogan */}
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Paww</Text>
+          <Text style={styles.subtitle}>
+            L'amour, ça se{'\n'}suit de près !
+          </Text>
+        </View>
+
+        {/* Illustration simplifiée */}
+        <View style={styles.illustrationContainer}>
+          <View style={styles.illustrationPlaceholder}>
+            <Text style={styles.illustrationText}>🐱 🐶</Text>
+          </View>
+        </View>
+
+        {/* Boutons */}
+        <View style={styles.buttonContainer}>
+          {/* Bouton principal */}
+          <TouchableOpacity 
+            style={styles.primaryButton} 
+            onPress={handleGetStarted}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.primaryButtonText}>
+              Création de mon compte
+            </Text>
+          </TouchableOpacity>
+          
+          {/* Texte de connexion */}
+          <TouchableOpacity 
+            onPress={handleLogin} 
+            style={styles.loginContainer}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.loginText}>
+              Vous avez déjà un compte ? 
+              <Text style={styles.loginLink}> Connexion</Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -93,12 +78,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-  },
-  environmentBadge: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? 20 : 16,
-    right: 16,
-    zIndex: 100,
   },
   content: {
     flex: 1,
@@ -110,6 +89,19 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
     marginTop: Platform.OS === 'ios' ? 60 : 40,
+  },
+  logoPlaceholder: {
+    width: 65,
+    height: 65,
+    borderRadius: 8,
+    backgroundColor: '#9E6AFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   
   // Titre et slogan
@@ -125,11 +117,11 @@ const styles = StyleSheet.create({
     fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
   },
   subtitle: {
-    fontSize: 48,
+    fontSize: 24,
     fontWeight: '700',
     color: '#171717',
     textAlign: 'center',
-    lineHeight: 52,
+    lineHeight: 28,
     fontFamily: Platform.OS === 'ios' ? 'System' : 'Roboto',
   },
   
@@ -140,10 +132,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 40,
   },
-  illustrationImage: {
-    width: 320,
-    height: 240,
-    maxWidth: '100%',
+  illustrationPlaceholder: {
+    width: 200,
+    height: 150,
+    borderRadius: 20,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  illustrationText: {
+    fontSize: 48,
   },
   
   // Boutons

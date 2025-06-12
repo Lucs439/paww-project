@@ -8,6 +8,7 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
+import { authService } from '../services/authService';
 
 export default function LoginScreen({ navigation }) {
   const [formData, setFormData] = useState({
@@ -19,9 +20,27 @@ export default function LoginScreen({ navigation }) {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleLogin = () => {
-    console.log('🔐 Connexion avec:', formData);
-    // Ici tu connecteras avec ton backend
+  const handleLogin = async () => {
+    if (!formData.email || !formData.password) {
+      alert('Veuillez remplir tous les champs');
+      return;
+    }
+
+    try {
+      // Appel au service d'authentification pour la connexion
+      const result = await authService.login(formData.email, formData.password);
+
+      if (result.success) {
+        // ✅ Connexion réussie - redirection vers l'app principale
+        navigation.navigate('MainApp');
+      } else {
+        // Afficher l'erreur retournée par le backend
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la connexion:', error);
+      alert('Une erreur inattendue est survenue. Veuillez réessayer.');
+    }
   };
 
   const handleBackToWelcome = () => {
